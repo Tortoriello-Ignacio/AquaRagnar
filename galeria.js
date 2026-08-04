@@ -13,10 +13,11 @@
    ============================================================ */
 import { Camera, Mesh, Plane, Program, Renderer, Texture, Transform } from 'ogl';
 
-const ANCHO_TARJETA = 2040; // referencia en px sobre una pantalla de 1500 de alto
-const ALTO_TARJETA = 1020;  // proporcion 2:1, igual que las fotos
+const ANCHO_TARJETA = 2400; // referencia en px sobre una pantalla de 1500 de alto
+const ALTO_TARJETA = 1200;  // proporcion 2:1, igual que las fotos
 const SEPARACION = 1.5;     // aire entre tarjetas, en unidades de escena
 const ANCHO_MAXIMO = 0.9;   // la tarjeta nunca pasa este % del ancho del lienzo
+const MARGEN_SOMBRA = 1.1;  // aire alrededor de la tarjeta donde cae la sombra
 const DERIVA = 0.04;        // avance automatico por frame, en unidades de escena
 
 /* Tamano de la tarjeta en px para un lienzo dado. Se acota por ancho para que
@@ -46,10 +47,63 @@ class Tarjeta {
   constructor(opciones) {
     Object.assign(this, opciones);
     this.extra = 0;
+    this.crearSombra();
     this.crearPrograma();
     this.plane = new Mesh(this.gl, { geometry: this.geometry, program: this.program });
-    this.plane.setParent(this.scene);
+    this.plane.setParent(this.capaTarjetas);
     this.onResize();
+  }
+
+  /* Plano de apoyo detrás de la tarjeta: una caja redondeada difusa que le
+     da volumen. Va en su propia capa, por debajo de todas las fotos. */
+  crearSombra() {
+    this.programaSombra = new Program(this.gl, {
+      depthTest: false,
+      depthWrite: false,
+      transparent: true,
+      vertex: `
+        precision highp float;
+        attribute vec3 position;
+        attribute vec2 uv;
+        uniform mat4 modelViewMatrix;
+        uniform mat4 projectionMatrix;
+        varying vec2 vUv;
+        void main() {
+          vUv = uv;
+          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        }
+      `,
+      fragment: `
+        precision highp float;
+        uniform vec2 uMargen;     // aire alrededor de la tarjeta, en uv
+        uniform float uRadio;
+        uniform float uFuerza;
+        uniform float uBlur;      // las laterales proyectan menos
+        varying vec2 vUv;
+
+        float cajaRedondeada(vec2 p, vec2 b, float r) {
+          vec2 d = abs(p) - b;
+          return length(max(d, vec2(0.0))) + min(max(d.x, d.y), 0.0) - r;
+        }
+
+        void main() {
+          vec2 medio = vec2(0.5) - uMargen - uRadio;
+          float d = cajaRedondeada(vUv - 0.5, medio, uRadio);
+          float suavidad = min(uMargen.x, uMargen.y) * 1.9;
+          float a = 1.0 - smoothstep(-suavidad * 0.25, suavidad, d);
+          a *= a;                                  // caída más natural
+          gl_FragColor = vec4(0.016, 0.086, 0.145, a * uFuerza * mix(1.0, 0.4, uBlur));
+        }
+      `,
+      uniforms: {
+        uMargen: { value: [0.08, 0.08] },
+        uRadio: { value: 0.05 },
+        uFuerza: { value: 0.42 },
+        uBlur: { value: 0 }
+      }
+    });
+    this.sombra = new Mesh(this.gl, { geometry: this.geometry, program: this.programaSombra });
+    this.sombra.setParent(this.capaSombras);
   }
 
   crearPrograma() {
@@ -157,7 +211,12 @@ class Tarjeta {
     // ancho a proposito: como el carrusel deriva sin imantarse, la tarjeta
     // "del medio" casi nunca esta exactamente en x = 0 y se veia borrosa.
     const distancia = Math.abs(this.plane.position.x) / this.plane.scale.x;
-    this.program.uniforms.uBlur.value = clamp01((distancia - 0.55) / 0.45);
+    const desenfoque = clamp01((distancia - 0.55) / 0.45);
+    this.program.uniforms.uBlur.value = desenfoque;
+
+    this.sombra.position.x = this.plane.position.x;
+    this.sombra.position.y = this.plane.position.y - MARGEN_SOMBRA * 0.42;
+    this.programaSombra.uniforms.uBlur.value = desenfoque;
 
     // Bucle: la tarjeta que sale por un borde reaparece por el otro.
     const mitad = this.plane.scale.x / 2;
@@ -173,6 +232,13 @@ class Tarjeta {
     this.plane.scale.y = (this.viewport.height * alto) / this.screen.height;
     this.plane.scale.x = (this.viewport.width * ancho) / this.screen.width;
     this.plane.program.uniforms.uPlaneSizes.value = [this.plane.scale.x, this.plane.scale.y];
+
+    this.sombra.scale.x = this.plane.scale.x + MARGEN_SOMBRA * 2;
+    this.sombra.scale.y = this.plane.scale.y + MARGEN_SOMBRA * 2;
+    this.programaSombra.uniforms.uMargen.value = [
+      MARGEN_SOMBRA / this.sombra.scale.x,
+      MARGEN_SOMBRA / this.sombra.scale.y
+    ];
     this.ancho = this.plane.scale.x + SEPARACION;
     this.anchoTotal = this.ancho * this.length;
     this.x = this.ancho * this.index;
@@ -200,6 +266,12 @@ class Galeria {
     this.crearRenderer();
     this.crearCamara();
     this.scene = new Transform();
+    // Dos capas: ogl dibuja en orden de inserción y aquí no hay test de
+    // profundidad, así que todas las sombras van antes que todas las fotos.
+    this.capaSombras = new Transform();
+    this.capaSombras.setParent(this.scene);
+    this.capaTarjetas = new Transform();
+    this.capaTarjetas.setParent(this.scene);
     this.onResize();
     this.geometry = new Plane(this.gl, { widthSegments: 1, heightSegments: 1 });
     this.crearTarjetas();
@@ -241,7 +313,8 @@ class Galeria {
       image: dato.image,
       index,
       length: lista.length,
-      scene: this.scene,
+      capaSombras: this.capaSombras,
+      capaTarjetas: this.capaTarjetas,
       screen: this.screen,
       viewport: this.viewport,
       borderRadius: this.borderRadius

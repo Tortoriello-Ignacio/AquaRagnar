@@ -239,6 +239,32 @@ p{margin:0}
 @media (max-width:620px){
 }
 
+/* ---------- Fundido entre secciones ----------
+   Cada sección arranca con un degradado del color de la anterior, así el
+   cambio de tono se resuelve en una franja y no en una línea. */
+.seccion::before,
+.cierre::before,
+.pie::before{
+  content:"";position:absolute;left:0;right:0;top:0;
+  height:var(--fundido,170px);z-index:1;pointer-events:none;
+  background:linear-gradient(180deg,var(--tono-previo,transparent),transparent);
+}
+#programas{--tono-previo:rgba(6,37,63,.32);--fundido:80px}
+#metodo{--tono-previo:var(--celeste-4)}
+#horarios{--tono-previo:var(--celeste-1)}
+#tienda{--tono-previo:var(--celeste-3)}
+#sumate{--tono-previo:var(--celeste-1)}
+.pie{position:relative;--tono-previo:var(--celeste-4);--fundido:120px}
+
+/* ---------- Silk: fondo de ondas por sección ---------- */
+.silk{
+  position:absolute;inset:0;z-index:0;
+  width:100%;height:100%;display:block;pointer-events:none;
+}
+/* el contenido de la sección se apoya por encima del lienzo */
+.seccion > .contenedor,
+.cierre > .contenedor{position:relative;z-index:1}
+
 /* ---------- Secciones ---------- */
 .seccion{position:relative;padding:6.5rem 0}
 .seccion--claro{background:var(--celeste-1)}
@@ -267,7 +293,7 @@ p{margin:0}
 .galeria__origen[hidden]{display:none}
 
 .ficha{
-  max-width:44rem;margin:1.8rem auto 0;padding-inline:1.25rem;text-align:center;
+  max-width:44rem;margin:.3rem auto 0;padding-inline:1.25rem;text-align:center;
   display:grid;justify-items:center;gap:.55rem;
 }
 .ficha__detalle{font-family:var(--mono);font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--bronce)}
@@ -324,10 +350,6 @@ p{margin:0}
 
 /* ---------- Formulario ---------- */
 .cierre{position:relative;padding:6.5rem 0 7rem;background:var(--celeste-4);overflow:hidden}
-.cierre::before{
-  content:"";position:absolute;inset:auto -10% -60% -10%;height:70%;border-radius:50%;
-  background:radial-gradient(circle,rgba(255,255,255,.7),transparent 66%);filter:blur(30px);
-}
 .cierre__grid{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:3.5rem;align-items:start}
 .cierre__texto{margin-top:1rem}
 .cierre__contacto{margin-top:2rem}
@@ -356,8 +378,8 @@ p{margin:0}
 .exito.visible{display:block}
 
 /* ---------- Pie ---------- */
-.pie{background:var(--celeste-2);border-top:1px solid var(--linea);padding:3.5rem 0 2rem}
-.pie__grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:2rem}
+.pie{background:var(--celeste-2);padding:3.5rem 0 2rem}
+.pie__grid{position:relative;z-index:1;display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:2rem}
 .pie__col h3{font-family:var(--mono);font-size:.72rem;letter-spacing:.2em;color:var(--bronce);text-transform:uppercase;font-weight:600;margin-bottom:1rem}
 .pie__col ul{list-style:none;padding:0;margin:0;display:grid;gap:.6rem}
 .pie__col a{font-size:.92rem;color:var(--texto);transition:color var(--transicion)}
@@ -552,7 +574,7 @@ p{margin:0}
   </nav>
 
   <!-- ============ PROGRAMAS ============ -->
-  <section class="seccion seccion--hondo" id="programas">
+  <section class="seccion seccion--hondo" id="programas" data-silk="#a6d0ea">
     <div class="contenedor">
       <header class="seccion__cabecera revelar">
         <p class="eyebrow">Cuatro travesías</p>
@@ -598,7 +620,7 @@ p{margin:0}
   </section>
 
   <!-- ============ MÉTODO + MÉTRICAS ============ -->
-  <section class="seccion seccion--claro" id="metodo">
+  <section class="seccion seccion--claro" id="metodo" data-silk="#e9f5fd">
     <div class="andarivel-wrap" aria-hidden="true"><div class="andarivel"></div></div>
     <div class="contenedor">
       <header class="seccion__cabecera revelar">
@@ -621,7 +643,7 @@ p{margin:0}
 
 
   <!-- ============ HORARIOS ============ -->
-  <section class="seccion seccion--medio" id="horarios">
+  <section class="seccion seccion--medio" id="horarios" data-silk="#bfdef2">
     <div class="andarivel-wrap" aria-hidden="true"><div class="andarivel"></div></div>
     <div class="contenedor">
       <header class="seccion__cabecera revelar">
@@ -651,7 +673,7 @@ p{margin:0}
 
 
   <!-- ============ TIENDA (vitrina) ============ -->
-  <section class="seccion seccion--claro" id="tienda">
+  <section class="seccion seccion--claro" id="tienda" data-silk="#e9f5fd">
     <div class="andarivel-wrap" aria-hidden="true"><div class="andarivel"></div></div>
     <div class="contenedor">
       <div class="tienda__cabecera revelar">
@@ -721,7 +743,7 @@ p{margin:0}
   </section>
 
   <!-- ============ CIERRE / FORMULARIO ============ -->
-  <section class="cierre" id="sumate">
+  <section class="cierre" id="sumate" data-silk="#a6d0ea">
     <div class="contenedor cierre__grid">
       <div class="revelar">
         <p class="eyebrow">Sumate al clan</p>
@@ -919,5 +941,6 @@ p{margin:0}
 </script>
 <script type="module" src="torpedo.js"></script>
 <script type="module" src="galeria.js"></script>
+<script type="module" src="silk.js"></script>
 </body>
 </html>
