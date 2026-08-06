@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#03101f">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;700;800&family=Metamorphous&family=JetBrains+Mono:wght@400;600&family=Manrope:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;700;800&family=Grenze+Gotisch:wght@500;600;700&family=JetBrains+Mono:wght@400;600&family=Manrope:wght@400;500;700&display=swap" rel="stylesheet">
 <!-- de dónde saca el navegador three.js para el torpedo colgante -->
 <script type="importmap">
 {
@@ -43,13 +43,17 @@
   --texto:#173a52;
   --texto-tenue:#547287;
   --linea:rgba(6,37,63,.14);
+  /* CAMBIO: barra invisible arriba de todo; al scrollear aparece
+     translúcida en celeste grisáceo oscuro */
+  --nav-fondo-scroll:rgba(45,71,89,.62);
+  --nav-linea:rgba(255,255,255,.12);
   --sombra:rgba(6,37,63,.18);
   /* CAMBIO: degradé único para toda la landing (celeste hondo -> casi blanco) */
   --grad-a:#7ebae0;
   --grad-b:#f8fcff;
 
   --display:"Big Shoulders Display","Arial Narrow",Impact,sans-serif;
-  --vikinga:"Metamorphous","Papyrus",serif;
+  --vikinga:"Grenze Gotisch","Metamorphous","Papyrus",serif;
   --body:"Manrope",system-ui,-apple-system,"Segoe UI",sans-serif;
   --mono:"JetBrains Mono",ui-monospace,"SFMono-Regular",Consolas,monospace;
 
@@ -98,27 +102,25 @@ p{margin:0}
 .nav{
   position:fixed;inset:0 0 auto 0;z-index:70;
   padding:.9rem 0;
-  transition:background var(--transicion),backdrop-filter var(--transicion),border-color var(--transicion);
+  background:transparent;
+  backdrop-filter:none;
+  transition:background var(--transicion),border-color var(--transicion),backdrop-filter var(--transicion);
   border-bottom:1px solid transparent;
 }
 .nav.is-scrolled{
-  background:rgba(213,234,248,.86);
-  backdrop-filter:blur(14px) saturate(140%);
-  border-bottom-color:var(--linea);
+  background:var(--nav-fondo-scroll);
+  backdrop-filter:blur(12px) saturate(130%);
+  border-bottom-color:var(--nav-linea);
 }
 .nav__fila{display:flex;align-items:center}
 .marca{display:inline-flex;align-items:center;flex:none}
-/* CAMBIO: arriba de todo la nav va sobre el hero oscuro -> marca en claro */
+/* CAMBIO: la barra es oscura siempre -> la marca va clara en los dos estados */
 .marca__nombre{
-  font-family:var(--vikinga);font-weight:400;font-size:1.45rem;
-  letter-spacing:.02em;color:#eef6ff;
-  text-shadow:0 2px 16px rgba(0,0,0,.55);
-  transition:color var(--transicion),text-shadow var(--transicion);
+  font-family:var(--vikinga);font-weight:600;font-size:1.5rem;
+  letter-spacing:.05em;color:#eef6ff;
+  text-shadow:0 2px 14px rgba(0,0,0,.45);
 }
-.marca__nombre span{color:#63b4f5;transition:color var(--transicion)}
-/* al hacer scroll la barra se aclara y la marca vuelve al azul tinta */
-.nav.is-scrolled .marca__nombre{color:var(--tinta);text-shadow:none}
-.nav.is-scrolled .marca__nombre span{color:var(--hielo)}
+.marca__nombre span{color:#63b4f5}
 .btn{
   display:inline-flex;align-items:center;justify-content:center;gap:.6rem;
   border:0;cursor:pointer;border-radius:10px;
@@ -187,14 +189,6 @@ p{margin:0}
 /* la columna de texto arranca después del carril del torpedo */
 .hero__interior{position:relative;width:100%;padding-inline:var(--carril) 1.5rem}
 .hero__texto{max-width:42rem}
-
-/* CAMBIO: firma tipográfica AQUARAGNAR arriba del título */
-.hero__marca{
-  font-family:var(--display);font-weight:700;text-transform:uppercase;
-  font-size:clamp(1rem,1.5vw,1.38rem);letter-spacing:.42em;
-  color:var(--h-blanco);margin:0 0 1rem;
-}
-.hero__marca span{color:var(--h-azul-claro)}
 
 /* CAMBIO: filete con el yelmo al centro */
 .hero__filete{
@@ -398,10 +392,88 @@ p{margin:0}
 .ficha .btn--hielo{margin-top:.8rem}
 
 /* métricas */
-.metricas{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--linea);border:1px solid var(--linea);border-radius:var(--radio);overflow:hidden;margin-top:4rem}
-.metrica{background:var(--panel);padding:2rem 1.5rem;text-align:center}
-.metrica__numero{font-family:var(--display);font-size:3.4rem;color:var(--hielo-hondo);line-height:1}
-.metrica__texto{font-size:.86rem;color:var(--texto-tenue);margin-top:.4rem}
+/* ---------- Nosotros: mosaico del equipo ---------- */
+.mosaico{
+  margin-top:3.2rem;
+  display:grid;grid-template-columns:repeat(3,1fr);
+  grid-auto-rows:clamp(150px,17.5vw,265px);
+  grid-auto-flow:dense;
+  gap:1rem;
+}
+.mosaico__celda{
+  position:relative;padding:0;border:0;overflow:hidden;cursor:zoom-in;
+  border-radius:var(--radio);background:var(--panel);
+  box-shadow:0 12px 34px -22px var(--sombra);
+  transition:transform var(--transicion),box-shadow var(--transicion);
+}
+.mosaico__celda--grande{grid-column:span 2;grid-row:span 2}
+.mosaico__celda--alta{grid-row:span 2}
+.mosaico__celda:hover{transform:translateY(-3px);box-shadow:0 22px 46px -24px var(--sombra)}
+.mosaico__foto{
+  width:100%;height:100%;object-fit:cover;object-position:center 28%;
+  transition:transform 620ms cubic-bezier(.2,.7,.3,1);
+}
+.mosaico__celda:hover .mosaico__foto,
+.mosaico__celda:focus-visible .mosaico__foto{transform:scale(1.06)}
+.mosaico__pie{
+  position:absolute;inset:auto 0 0 0;padding:1.5rem .9rem .8rem;
+  background:linear-gradient(180deg,rgba(6,37,63,0),rgba(6,37,63,.86));
+  color:#fff;text-align:left;
+  font-family:var(--display);font-weight:700;text-transform:uppercase;
+  letter-spacing:.05em;font-size:1.02rem;line-height:1.1;
+  opacity:0;transform:translateY(10px);
+  transition:opacity var(--transicion),transform var(--transicion);
+}
+.mosaico__celda:hover .mosaico__pie,
+.mosaico__celda:focus-visible .mosaico__pie{opacity:1;transform:none}
+
+/* visor a pantalla completa */
+.visor{position:fixed;inset:0;z-index:90;display:flex;align-items:center;justify-content:center}
+.visor[hidden]{display:none}
+.visor__fondo{
+  position:absolute;inset:0;background:rgba(4,20,34,.82);
+  backdrop-filter:blur(6px);opacity:0;transition:opacity 300ms ease;
+}
+.visor.is-abierto .visor__fondo{opacity:1}
+.visor__figura{
+  position:relative;margin:0;z-index:2;
+  width:min(92vw,880px);max-height:86vh;
+  display:flex;flex-direction:column;
+  border-radius:var(--radio);overflow:hidden;
+  background:#0b2338;box-shadow:0 40px 90px -40px rgba(0,0,0,.8);
+  transform-origin:top left;
+}
+.visor__foto{width:100%;max-height:70vh;object-fit:contain;background:#0b2338}
+.visor__pie{padding:1.1rem 1.3rem 1.3rem;color:#fff}
+.visor__titulo{
+  font-family:var(--display);font-weight:700;text-transform:uppercase;
+  letter-spacing:.04em;font-size:clamp(1.3rem,3vw,2rem);line-height:1;margin:0;
+}
+.visor__texto{margin:.5rem 0 0;color:#c6ddef;font-size:.95rem}
+.visor__boton{
+  position:absolute;z-index:3;display:grid;place-items:center;
+  width:44px;height:44px;border:1px solid rgba(255,255,255,.28);
+  border-radius:50%;background:rgba(6,37,63,.55);color:#fff;
+  font-size:1.5rem;line-height:1;cursor:pointer;
+  transition:background var(--transicion),transform var(--transicion);
+}
+.visor__boton:hover{background:rgba(15,120,180,.85);transform:scale(1.06)}
+.visor__cerrar{top:max(1rem,3vh);right:max(1rem,3vw)}
+.visor__ante{left:max(.6rem,2vw)}
+.visor__sigue{right:max(.6rem,2vw)}
+body.sin-scroll{overflow:hidden}
+
+@media (max-width:900px){
+  .mosaico{grid-template-columns:repeat(2,1fr);grid-auto-rows:34vw;gap:.7rem}
+  .mosaico__celda--grande{grid-column:span 2;grid-row:span 1}
+  .mosaico__celda--alta{grid-row:span 1}
+  .mosaico__pie{font-size:.85rem;padding:1.2rem .7rem .6rem;opacity:1;transform:none}
+  .visor__figura{width:94vw}
+  .visor__boton{width:38px;height:38px}
+}
+@media (prefers-reduced-motion:reduce){
+  .mosaico__celda,.mosaico__foto,.visor__figura,.visor__fondo{transition:none!important}
+}
 
 /* horarios */
 .horarios{width:100%;border-collapse:collapse;font-size:.95rem;background:var(--panel);border-radius:var(--radio);overflow:hidden}
@@ -507,7 +579,6 @@ p{margin:0}
 }
 @media (max-width:1040px){
   .vitrina{grid-template-columns:repeat(2,1fr)}
-  .metricas{grid-template-columns:repeat(2,1fr)}
   .pie__grid{grid-template-columns:1fr 1fr}
 }
 @media (max-width:900px){
@@ -528,11 +599,9 @@ p{margin:0}
   .seccion{padding:4.5rem 0}
   .galeria__lienzo{height:min(58vh,380px)}
   .vitrina{grid-template-columns:1fr}
-  .metricas{grid-template-columns:1fr 1fr}
   .pie__grid{grid-template-columns:1fr}
   .tabla-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
   .horarios{min-width:560px}
-  .hero__marca{letter-spacing:.3em}
   .hero__titulo{font-size:clamp(2.5rem,12.5vw,3.6rem)}
   .hero__sellos{gap:.45rem .75rem}
   .hero__sello b{font-size:.84rem;letter-spacing:.1em}
@@ -574,7 +643,6 @@ p{margin:0}
 
     <div class="hero__interior">
       <div class="hero__texto">
-        <p class="hero__marca"><span>Aqua</span>Ragnar</p>
 
         <div class="hero__filete" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5.5 17v-4.2a6.5 6.5 0 0 1 13 0V17z"/><path d="M12 11.4V17"/><path d="M5.5 12.9c-2.2.1-3.6-1.3-3.8-3.5 2-.2 3.4.8 4 2.2M18.5 12.9c2.2.1 3.6-1.3 3.8-3.5-2-.2-3.4.8-4 2.2"/></svg></div>
 
@@ -744,24 +812,96 @@ p{margin:0}
     </div>
   </section>
 
-  <!-- ============ MÉTODO + MÉTRICAS ============ -->
-  <section class="seccion seccion--claro" id="metodo" data-silk="#e9f5fd">
+  <!-- ============ NOSOTROS / EL EQUIPO ============ -->
+  <section class="seccion seccion--claro" id="nosotros" data-silk="#e9f5fd">
     <div class="andarivel-wrap" aria-hidden="true"><div class="andarivel"></div></div>
     <div class="contenedor">
       <header class="seccion__cabecera revelar">
-        <p class="eyebrow">Cómo entrenamos</p>
-        <h2 class="seccion__titulo">El agua se aprende<br>brazada por brazada</h2>
+        <p class="eyebrow">Nosotros</p>
+        <h2 class="seccion__titulo">Un equipo,<br>una forma de vivir</h2>
         <p class="seccion__texto">
-          Filmamos bajo el agua una vez por mes y revisamos el video con cada nadador. Nadie corrige
-          lo que no vio. El resto es constancia: llegar, meterse y cumplir el plan del día.
+          En AquaRagnar el agua es una escuela de car&aacute;cter. Con Jonathan &mdash;Jony&mdash; al frente,
+          entrenamos convencidos de que la disciplina que se construye brazada a brazada no se queda
+          en la pileta: la cabeza que aprende a sostener el plan cuando cuesta es la misma que despu&eacute;s
+          enfrenta lo que venga afuera. Hay lugar para todas las edades en Escuela, Entrenamiento,
+          Competencia y M&aacute;ster, y Aguas abiertas. Se arranca donde uno est&aacute;; el h&aacute;bito hace el resto.
         </p>
       </header>
 
-      <div class="metricas revelar">
-        <div class="metrica"><p class="metrica__numero">6</p><p class="metrica__texto">andariveles de 25 m</p></div>
-        <div class="metrica"><p class="metrica__numero">212</p><p class="metrica__texto">nadadores en el club</p></div>
-        <div class="metrica"><p class="metrica__numero">1.480</p><p class="metrica__texto">km nadados esta temporada</p></div>
-        <div class="metrica"><p class="metrica__numero">14</p><p class="metrica__texto">podios en la liga 2025</p></div>
+      <!-- CAMBIO: mosaico del equipo; cada foto se amplia al tocarla -->
+      <div class="mosaico revelar" id="mosaico">
+        <button class="mosaico__celda mosaico__celda--grande" type="button" data-foto="0"
+                aria-label="Ampliar foto: El grupo">
+          <img class="mosaico__foto" src="equipo-08.webp" alt="Nadadores del club al borde de la pileta después del entrenamiento"
+               loading="lazy" decoding="async" width="852" height="516">
+          <span class="mosaico__pie">El grupo</span>
+        </button>
+        <button class="mosaico__celda" type="button" data-foto="1"
+                aria-label="Ampliar foto: La bandera del clan">
+          <img class="mosaico__foto" src="equipo-01.webp" alt="Grupo del club sosteniendo la bandera de AquaRagnar en la pileta"
+               loading="lazy" decoding="async" width="529" height="586">
+          <span class="mosaico__pie">La bandera del clan</span>
+        </button>
+        <button class="mosaico__celda mosaico__celda--alta" type="button" data-foto="2"
+                aria-label="Ampliar foto: Después de la serie">
+          <img class="mosaico__foto" src="equipo-03.webp" alt="Dos nadadores del club posando al borde de la pileta"
+               loading="lazy" decoding="async" width="536" height="735">
+          <span class="mosaico__pie">Después de la serie</span>
+        </button>
+        <button class="mosaico__celda mosaico__celda--alta" type="button" data-foto="3"
+                aria-label="Ampliar foto: Competencia">
+          <img class="mosaico__foto" src="equipo-04.webp" alt="Nadadores festejando en el borde de una pileta de competencia"
+               loading="lazy" decoding="async" width="670" height="761">
+          <span class="mosaico__pie">Competencia</span>
+        </button>
+        <button class="mosaico__celda mosaico__celda--alta" type="button" data-foto="4"
+                aria-label="Ampliar foto: Los colores del club">
+          <img class="mosaico__foto" src="equipo-10.webp" alt="Dos integrantes del club con la remera de AquaRagnar junto a la pileta"
+               loading="lazy" decoding="async" width="673" height="815">
+          <span class="mosaico__pie">Los colores del club</span>
+        </button>
+        <button class="mosaico__celda mosaico__celda--alta" type="button" data-foto="5"
+                aria-label="Ampliar foto: Antes de largar">
+          <img class="mosaico__foto" src="equipo-06.webp" alt="Tres nadadores en la orilla antes de una prueba de aguas abiertas"
+               loading="lazy" decoding="async" width="514" height="570">
+          <span class="mosaico__pie">Antes de largar</span>
+        </button>
+        <button class="mosaico__celda" type="button" data-foto="6"
+                aria-label="Ampliar foto: Aguas abiertas">
+          <img class="mosaico__foto" src="equipo-02.webp" alt="Grupo con la bandera del club en la orilla de una laguna"
+               loading="lazy" decoding="async" width="668" height="469">
+          <span class="mosaico__pie">Aguas abiertas</span>
+        </button>
+        <button class="mosaico__celda mosaico__celda--alta" type="button" data-foto="7"
+                aria-label="Ampliar foto: Atardecer">
+          <img class="mosaico__foto" src="equipo-12.webp" alt="Dos nadadores con la bandera del club frente al río al atardecer"
+               loading="lazy" decoding="async" width="610" height="764">
+          <span class="mosaico__pie">Atardecer</span>
+        </button>
+        <button class="mosaico__celda mosaico__celda--alta" type="button" data-foto="8"
+                aria-label="Ampliar foto: La rutina">
+          <img class="mosaico__foto" src="equipo-07.webp" alt="Nadador caminando por el borde de la pileta antes de entrar al agua"
+               loading="lazy" decoding="async" width="502" height="643">
+          <span class="mosaico__pie">La rutina</span>
+        </button>
+        <button class="mosaico__celda" type="button" data-foto="9"
+                aria-label="Ampliar foto: Podio">
+          <img class="mosaico__foto" src="equipo-09.webp" alt="Podio de una carrera de aguas abiertas con tres competidores"
+               loading="lazy" decoding="async" width="516" height="447">
+          <span class="mosaico__pie">Podio</span>
+        </button>
+        <button class="mosaico__celda" type="button" data-foto="10"
+                aria-label="Ampliar foto: Todos al agua">
+          <img class="mosaico__foto" src="equipo-05.webp" alt="Grupo grande de nadadores dentro de la pileta con la bandera del club"
+               loading="lazy" decoding="async" width="536" height="327">
+          <span class="mosaico__pie">Todos al agua</span>
+        </button>
+        <button class="mosaico__celda" type="button" data-foto="11"
+                aria-label="Ampliar foto: Salida del agua">
+          <img class="mosaico__foto" src="equipo-11.webp" alt="Nadador saliendo del agua al final de una carrera en aguas abiertas"
+               loading="lazy" decoding="async" width="516" height="347">
+          <span class="mosaico__pie">Salida del agua</span>
+        </button>
       </div>
     </div>
   </section>
@@ -945,7 +1085,7 @@ p{margin:0}
       <div class="pie__col">
         <h3>El club</h3>
         <ul>
-          <li><a href="#metodo">Método</a></li>
+          <li><a href="#nosotros">Nosotros</a></li>
           <li><a href="#horarios">Horarios</a></li>
         <li><a href="#tienda">Tienda</a></li>
             <li><a href="#sumate">Clase de prueba</a></li>
@@ -978,7 +1118,7 @@ p{margin:0}
   /* ---------- Navbar: fondo al hacer scroll ---------- */
   var nav = document.getElementById("nav");
   var alScrollear = function () {
-    nav.classList.toggle("is-scrolled", window.scrollY > 24);
+    nav.classList.toggle("is-scrolled", window.scrollY > 8);
   };
   alScrollear();
   window.addEventListener("scroll", alScrollear, { passive: true });
@@ -1072,5 +1212,112 @@ p{margin:0}
 <script type="module" src="torpedo.js"></script>
 <script type="module" src="galeria.js"></script>
 <script type="module" src="silk.js"></script>
+<script>
+/* ---------- Mosaico del equipo: ampliar foto ---------- */
+(function(){
+  var FOTOS=[
+    {src:"equipo-08.webp",titulo:"El grupo",texto:"Los que llegan, se meten y cumplen el plan del día.",alt:"Nadadores del club al borde de la pileta después del entrenamiento"},
+    {src:"equipo-01.webp",titulo:"La bandera del clan",texto:"El emblema viaja a donde vayamos a nadar.",alt:"Grupo del club sosteniendo la bandera de AquaRagnar en la pileta"},
+    {src:"equipo-03.webp",titulo:"Después de la serie",texto:"Lo que queda cuando se apaga el cronómetro.",alt:"Dos nadadores del club posando al borde de la pileta"},
+    {src:"equipo-04.webp",titulo:"Competencia",texto:"Largada, andarivel y el equipo alentando desde el borde.",alt:"Nadadores festejando en el borde de una pileta de competencia"},
+    {src:"equipo-10.webp",titulo:"Los colores del club",texto:"La remera se gana entrenando.",alt:"Dos integrantes del club con la remera de AquaRagnar junto a la pileta"},
+    {src:"equipo-06.webp",titulo:"Antes de largar",texto:"En aguas abiertas el nervio previo también se entrena.",alt:"Tres nadadores en la orilla antes de una prueba de aguas abiertas"},
+    {src:"equipo-02.webp",titulo:"Aguas abiertas",texto:"Del andarivel al río: la misma cabeza, otro escenario.",alt:"Grupo con la bandera del club en la orilla de una laguna"},
+    {src:"equipo-12.webp",titulo:"Atardecer",texto:"Se termina el día y la bandera sigue arriba.",alt:"Dos nadadores con la bandera del club frente al río al atardecer"},
+    {src:"equipo-07.webp",titulo:"La rutina",texto:"Llegar, meterse y hacer el trabajo del día.",alt:"Nadador caminando por el borde de la pileta antes de entrar al agua"},
+    {src:"equipo-09.webp",titulo:"Podio",texto:"Lo que se entrena a las seis y media de la mañana se ve acá.",alt:"Podio de una carrera de aguas abiertas con tres competidores"},
+    {src:"equipo-05.webp",titulo:"Todos al agua",texto:"Escuela, competencia y máster comparten pileta.",alt:"Grupo grande de nadadores dentro de la pileta con la bandera del club"},
+    {src:"equipo-11.webp",titulo:"Salida del agua",texto:"El último tramo se corre; el cuerpo ya lo sabe.",alt:"Nadador saliendo del agua al final de una carrera en aguas abiertas"}
+  ];
+  var grilla=document.getElementById("mosaico");
+  if(!grilla) return;
+  var suave=!window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  var visor=document.createElement("div");
+  visor.className="visor"; visor.id="visor"; visor.hidden=true;
+  visor.setAttribute("role","dialog");
+  visor.setAttribute("aria-modal","true");
+  visor.setAttribute("aria-label","Foto ampliada");
+  visor.innerHTML=
+    '<div class="visor__fondo" data-cerrar></div>'+
+    '<button class="visor__boton visor__cerrar" type="button" data-cerrar aria-label="Cerrar">\u00d7</button>'+
+    '<button class="visor__boton visor__ante" type="button" data-paso="-1" aria-label="Foto anterior">\u2039</button>'+
+    '<button class="visor__boton visor__sigue" type="button" data-paso="1" aria-label="Foto siguiente">\u203a</button>'+
+    '<figure class="visor__figura">'+
+      '<img class="visor__foto" alt="">'+
+      '<figcaption class="visor__pie"><p class="visor__titulo"></p><p class="visor__texto"></p></figcaption>'+
+    '</figure>';
+  document.body.appendChild(visor);
+
+  var figura=visor.querySelector(".visor__figura");
+  var foto=visor.querySelector(".visor__foto");
+  var titulo=visor.querySelector(".visor__titulo");
+  var texto=visor.querySelector(".visor__texto");
+  var indice=0, ultimoBoton=null;
+
+  function pintar(i){
+    var d=FOTOS[i]; if(!d) return;
+    indice=i; foto.src=d.src; foto.alt=d.alt;
+    titulo.textContent=d.titulo; texto.textContent=d.texto;
+  }
+
+  function abrir(i,boton){
+    ultimoBoton=boton||null;
+    pintar(i);
+    visor.hidden=false;
+    document.body.classList.add("sin-scroll");
+    requestAnimationFrame(function(){
+      if(suave&&boton){
+        var o=boton.getBoundingClientRect(), f=figura.getBoundingClientRect();
+        var e=Math.max(.12,o.width/f.width);
+        var dx=(o.left+o.width/2)-(f.left+f.width/2);
+        var dy=(o.top+o.height/2)-(f.top+f.height/2);
+        figura.style.transition="none";
+        figura.style.transformOrigin="center center";
+        figura.style.transform="translate("+dx+"px,"+dy+"px) scale("+e+")";
+        figura.style.opacity="0";
+        requestAnimationFrame(function(){
+          figura.style.transition="transform 420ms cubic-bezier(.2,.7,.3,1),opacity 260ms ease";
+          figura.style.transform="none"; figura.style.opacity="1";
+        });
+      }
+      visor.classList.add("is-abierto");
+      visor.querySelector(".visor__cerrar").focus();
+    });
+  }
+
+  function cerrar(){
+    visor.classList.remove("is-abierto");
+    if(suave){
+      figura.style.transition="transform 260ms ease,opacity 200ms ease";
+      figura.style.transform="scale(.94)"; figura.style.opacity="0";
+    }
+    window.setTimeout(function(){
+      visor.hidden=true;
+      figura.style.cssText="";
+      document.body.classList.remove("sin-scroll");
+      if(ultimoBoton) ultimoBoton.focus();
+    }, suave?240:0);
+  }
+
+  function paso(n){ pintar((indice+n+FOTOS.length)%FOTOS.length); }
+
+  grilla.addEventListener("click",function(ev){
+    var celda=ev.target.closest(".mosaico__celda");
+    if(celda) abrir(parseInt(celda.dataset.foto,10),celda);
+  });
+  visor.addEventListener("click",function(ev){
+    if(ev.target.closest("[data-cerrar]")) return cerrar();
+    var b=ev.target.closest("[data-paso]");
+    if(b) paso(parseInt(b.dataset.paso,10));
+  });
+  document.addEventListener("keydown",function(ev){
+    if(visor.hidden) return;
+    if(ev.key==="Escape") cerrar();
+    else if(ev.key==="ArrowRight") paso(1);
+    else if(ev.key==="ArrowLeft") paso(-1);
+  });
+})();
+</script>
 </body>
 </html>

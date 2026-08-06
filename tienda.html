@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#03101f">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;700;800&family=Metamorphous&family=JetBrains+Mono:wght@400;600&family=Manrope:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;700;800&family=Grenze+Gotisch:wght@500;600;700&family=JetBrains+Mono:wght@400;600&family=Manrope:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 /* ============================================================
    AquaRagnar · Tienda
@@ -31,7 +31,7 @@
   --sombra:rgba(6,37,63,.18);
 
   --display:"Big Shoulders Display","Arial Narrow",Impact,sans-serif;
-  --vikinga:"Metamorphous","Papyrus",serif;
+  --vikinga:"Grenze Gotisch","Metamorphous","Papyrus",serif;
   --body:"Manrope",system-ui,-apple-system,"Segoe UI",sans-serif;
   --mono:"JetBrains Mono",ui-monospace,"SFMono-Regular",Consolas,monospace;
 
@@ -65,13 +65,14 @@ p{margin:0}
 /* ---------- Navbar ---------- */
 .nav{
   position:fixed;inset:0 0 auto 0;z-index:50;padding:.9rem 0;
-  background:rgba(213,234,248,.88);backdrop-filter:blur(14px) saturate(140%);
-  border-bottom:1px solid var(--linea);
+  /* CAMBIO: barra en celeste grisáceo oscuro, igual que el inicio */
+  background:rgba(45,71,89,.62);backdrop-filter:blur(12px) saturate(130%);
+  border-bottom:1px solid rgba(255,255,255,.12);
 }
 .nav__fila{display:flex;align-items:center;justify-content:space-between;gap:1rem}
 .marca{display:inline-flex;align-items:center;flex:none}
-.marca__nombre{font-family:var(--vikinga);font-weight:400;font-size:1.3rem;letter-spacing:.02em;color:var(--espuma)}
-.marca__nombre span{color:var(--hielo)}
+.marca__nombre{font-family:var(--vikinga);font-weight:600;font-size:1.35rem;letter-spacing:.05em;color:#eef6ff}
+.marca__nombre span{color:#63b4f5}
 .nav__acciones{display:flex;align-items:center;gap:.9rem;flex:none}
 .nav__oficial{font-size:.85rem;padding:.6rem .9rem;white-space:nowrap}
 /* CAMBIO: en pantallas chicas el botón de la tienda oficial se esconde (queda el del pie) */
