@@ -1,0 +1,743 @@
+/* ============================================================
+   AquaRagnar · sistema de diseño (tema celeste claro)
+   Paleta tomada de la tela del emblema: celeste, marea, tinta, bronce
+   ============================================================ */
+:root{
+  /* escala de celestes: las secciones alternan entre estos cuatro */
+  --celeste-1:#e9f5fd;
+  --celeste-2:#d5eaf8;
+  --celeste-3:#bfdef2;
+  --celeste-4:#a6d0ea;
+  --fondo:var(--celeste-2);
+  --fondo-hondo:var(--celeste-3);
+  --panel:rgba(9,26,44,.62);
+  --fiordo:rgba(6,19,33,.72);
+  --marea:#1c5f8f;
+  --hielo:#0f78b4;
+  --hielo-hondo:#0a5f92;
+  --espuma:#f4fbff;
+  --tinta:#06253f;
+  --bronce:#d7a55f;
+  --texto:#bcd6ea;
+  --texto-tenue:#8dafc7;
+  --linea:rgba(255,255,255,.15);
+  /* tema oceánico: texto y superficies sobre el fondo submarino */
+  --titulo:#eaf6ff;
+  --acento:#6cc6ff;
+  --vidrio:rgba(9,26,44,.62);
+  --vidrio-hondo:rgba(6,19,33,.72);
+  /* barra invisible arriba de todo; al scrollear aparece
+     translúcida en celeste grisáceo oscuro */
+  --nav-fondo-scroll:rgba(45,71,89,.62);
+  --nav-linea:rgba(255,255,255,.12);
+  --sombra:rgba(0,0,0,.55);
+  /* degradé único para toda la landing (celeste hondo -> casi blanco) */
+  --grad-a:#7ebae0;
+  --grad-b:#f8fcff;
+
+  --display:"Big Shoulders Display","Arial Narrow",Impact,sans-serif;
+  --vikinga:"Grenze Gotisch","Metamorphous","Papyrus",serif;
+  --body:"Manrope",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,"SFMono-Regular",Consolas,monospace;
+
+  --ancho:1220px;
+  --radio:14px;
+  --transicion:280ms cubic-bezier(.2,.7,.3,1);
+}
+
+*,*::before,*::after{box-sizing:border-box}
+/* un solo degradé continuo de punta a punta de la página.
+   Va en <html> para que cubra todo el alto del documento y ninguna
+   sección corte el color. */
+html{
+  scroll-behavior:smooth;
+  min-height:100%;
+  background:#08111c;
+}
+
+body{
+  margin:0;
+  /* el lecho marino queda anclado al final del documento */
+  background:url("fondo-lecho.webp") center bottom / 115% auto no-repeat;
+  color:var(--texto);
+  font-family:var(--body);
+  font-size:17px;
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+img{max-width:100%;height:auto;display:block}
+/* sprite de íconos: sólo define <symbol>, nunca se dibuja */
+.iconos{display:none}
+a{color:inherit;text-decoration:none}
+button,input,select{font:inherit;color:inherit}
+h1,h2,h3{margin:0;font-family:var(--display);font-weight:800;line-height:.92;letter-spacing:-.01em;text-transform:uppercase}
+p{margin:0}
+address{font-style:normal}
+:focus-visible{outline:3px solid var(--hielo);outline-offset:3px;border-radius:4px}
+
+.contenedor{width:min(100% - 2.5rem,var(--ancho));margin-inline:auto}
+.eyebrow{
+  font-family:var(--mono);font-size:.72rem;font-weight:600;
+  letter-spacing:.22em;text-transform:uppercase;color:var(--bronce);
+  display:flex;align-items:center;gap:.7rem;
+}
+.saltar{position:absolute;left:-9999px}
+.saltar:focus{left:1rem;top:1rem;z-index:100;background:var(--hielo-hondo);color:#fff;padding:.6rem 1rem;border-radius:8px}
+
+/* ---------- Barra de navegación ---------- */
+.nav{
+  position:fixed;inset:0 0 auto 0;z-index:70;
+  padding:.9rem 0;
+  background:transparent;
+  backdrop-filter:none;
+  transition:background var(--transicion),border-color var(--transicion),backdrop-filter var(--transicion);
+  border-bottom:1px solid transparent;
+}
+.nav.is-scrolled{
+  background:var(--nav-fondo-scroll);
+  backdrop-filter:blur(12px) saturate(130%);
+  border-bottom-color:var(--nav-linea);
+}
+.nav__fila{display:flex;align-items:center}
+.marca{display:inline-flex;align-items:center;flex:none}
+/* la barra es oscura siempre -> la marca va clara en los dos estados */
+.marca__nombre{
+  font-family:var(--vikinga);font-weight:600;font-size:1.5rem;
+  letter-spacing:.05em;color:#eef6ff;
+  text-shadow:0 2px 14px rgba(0,0,0,.45);
+}
+.marca__nombre span{color:#63b4f5}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:.6rem;
+  border:0;cursor:pointer;border-radius:10px;
+  font-family:var(--display);font-weight:700;text-transform:uppercase;
+  letter-spacing:.05em;line-height:1;
+  transition:transform var(--transicion),box-shadow var(--transicion),background var(--transicion),border-color var(--transicion);
+}
+.btn--fantasma{
+  background:var(--vidrio);backdrop-filter:blur(8px);
+  border:1.5px solid rgba(108,198,255,.45);
+  color:var(--titulo);padding:.72rem 1.1rem;font-size:1rem;
+}
+.btn--fantasma:hover{border-color:var(--acento);background:rgba(15,120,180,.35)}
+.btn--hielo{
+  background:linear-gradient(180deg,var(--hielo),var(--hielo-hondo));
+  color:#fff;padding:1.05rem 2rem;font-size:1.28rem;
+  box-shadow:0 14px 30px -14px rgba(10,95,146,.85),inset 0 1px 0 rgba(255,255,255,.28);
+}
+.btn--hielo:hover{transform:translateY(-2px);box-shadow:0 22px 40px -16px rgba(10,95,146,.9)}
+.btn--hielo:active{transform:translateY(0)}
+/* ---------- Hero (CAMBIO: tema oscuro sobre la bandera nueva) ---------- */
+.hero{
+  position:relative;isolation:isolate;overflow:hidden;
+  min-height:min(94vh,880px);
+  display:flex;align-items:center;
+  padding:9.5rem 0 4.5rem;
+  background:#071726;
+  /* carril reservado a la izquierda para el torpedo colgante */
+  --carril:215px;
+  /* paleta local del hero, tomada de la bandera azul */
+  --h-blanco:#f3f8fd;
+  --h-azul:#1e86e0;
+  --h-azul-claro:#63b4f5;
+}
+/* la bandera entra entera: contain a la derecha, y detrás la misma
+   imagen ampliada y desenfocada para que no queden bordes vacíos */
+.hero__emblema{
+  position:absolute;top:0;right:0;z-index:-2;
+  height:100%;width:auto;max-width:none;
+  /* el borde izquierdo se funde con el fondo desenfocado */
+  -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 20%);
+  mask-image:linear-gradient(90deg,transparent 0,#000 20%);
+}
+.hero::before{
+  content:"";position:absolute;inset:0;z-index:-3;
+  background:url("bandera-fondo.webp") center/cover no-repeat;
+  transform:scale(1.08);
+}
+/* velo oscuro a la izquierda (legibilidad) + fundido inferior hacia el menú */
+.hero__velo{
+  position:absolute;inset:0;z-index:-1;pointer-events:none;
+  background:
+    linear-gradient(90deg,
+      rgba(4,15,26,.92) 0%,
+      rgba(4,15,26,.86) 26%,
+      rgba(4,15,26,.58) 44%,
+      rgba(4,15,26,.16) 60%,
+      transparent 73%),
+    linear-gradient(180deg,
+      rgba(4,15,26,.5) 0%,
+      transparent 20%,
+      transparent 66%,
+      rgba(6,37,63,.85) 100%);
+}
+
+/* torpedo 3D colgando de la esquina superior izquierda */
+#lanyard{
+  position:absolute;inset:0;width:100%;height:100%;
+  z-index:60; /* por delante de todo el hero */
+  pointer-events:none; /* el arrastre se escucha en window, no en el canvas */
+}
+#lanyard[hidden]{display:none}
+#lanyard canvas{display:block;pointer-events:none;touch-action:none}
+
+/* la columna de texto arranca después del carril del torpedo */
+.hero__interior{position:relative;width:100%;padding-inline:var(--carril) 1.5rem}
+.hero__texto{max-width:42rem}
+
+/* filete con el yelmo al centro */
+.hero__filete{
+  display:flex;align-items:center;gap:.9rem;
+  max-width:22rem;margin:0 0 1.8rem;color:var(--h-azul-claro);
+}
+.hero__filete::before,.hero__filete::after{
+  content:"";flex:1;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(99,180,245,.7),transparent);
+}
+.hero__filete svg{width:26px;height:26px;flex:none;opacity:.95}
+
+/* titular en tres líneas, inclinado, con degradés plata/azul */
+.hero__titulo{
+  font-size:clamp(3rem,8.4vw,6.8rem);
+  line-height:.88;margin:0 0 1.9rem;
+  transform:skewX(-7deg);transform-origin:left bottom;
+}
+.hero__titulo .lin{
+  display:block;width:fit-content;
+  background:linear-gradient(180deg,#ffffff 6%,#d3e2ef 52%,#93a9bd 100%);
+  -webkit-background-clip:text;background-clip:text;
+  color:transparent;
+  filter:drop-shadow(0 8px 20px rgba(0,0,0,.5));
+}
+.hero__titulo .lin--azul{
+  background:linear-gradient(180deg,#54aef4 4%,#1e86e0 52%,#0c5cab 100%);
+  -webkit-background-clip:text;background-clip:text;
+}
+
+/* sellos (aguas abiertas · disciplina · equipo) */
+.hero__sellos{
+  display:flex;flex-wrap:wrap;align-items:center;
+  gap:.55rem 1rem;list-style:none;margin:0 0 2.4rem;padding:0;
+}
+.hero__sello{display:inline-flex;align-items:center;gap:.55rem;color:var(--h-blanco)}
+.hero__sello svg{width:25px;height:25px;flex:none;color:var(--h-azul-claro)}
+.hero__sello b{
+  font-family:var(--display);font-weight:700;text-transform:uppercase;
+  font-size:.98rem;letter-spacing:.13em;
+}
+.hero__sello:not(:last-child)::after{
+  content:"";width:1px;height:20px;margin-left:1rem;
+  background:rgba(147,190,231,.45);
+}
+.hero__bajada{color:var(--texto);font-size:1.06rem;max-width:34rem;text-shadow:0 1px 14px rgba(240,250,255,.85)}
+.hero__bajada strong{color:var(--tinta);font-weight:700}
+.hero__cta{display:flex;flex-wrap:wrap;align-items:center;gap:1.1rem}
+
+/* botón hexagonal rúnico del hero */
+.btn--runa{
+  position:relative;isolation:isolate;
+  background:transparent;border-radius:0;
+  color:var(--h-blanco);
+  padding:1.15rem 2.7rem;font-size:1.16rem;letter-spacing:.15em;
+  clip-path:polygon(20px 0,calc(100% - 20px) 0,100% 50%,calc(100% - 20px) 100%,20px 100%,0 50%);
+}
+.btn--runa::before{
+  content:"";position:absolute;inset:0;z-index:-2;
+  background:linear-gradient(115deg,rgba(122,193,248,.95),rgba(30,134,224,.6));
+}
+.btn--runa::after{
+  content:"";position:absolute;inset:1.6px;z-index:-1;
+  clip-path:polygon(20px 0,calc(100% - 20px) 0,100% 50%,calc(100% - 20px) 100%,20px 100%,0 50%);
+  background:linear-gradient(180deg,rgba(9,38,66,.9),rgba(5,20,36,.94));
+  transition:background var(--transicion);
+}
+.btn--runa svg{width:18px;height:18px;flex:none;color:var(--h-azul-claro)}
+.btn--runa:hover{transform:translateY(-2px)}
+.btn--runa:hover::after{background:linear-gradient(180deg,rgba(19,72,124,.92),rgba(8,34,60,.95))}
+.btn--runa:active{transform:translateY(0)}
+
+/* ---------- Menú fluido (puerto de FlowingMenu, sin gsap) ---------- */
+/* el menú hace de puente entre el hero y el cielo tormentoso */
+.menufluido{background:linear-gradient(180deg,#06121e,#0e2a50);overflow:hidden}
+.menufluido__lista{display:flex;flex-direction:column;margin:0;padding:0;list-style:none}
+.menu__item{
+  position:relative;overflow:hidden;text-align:center;
+  border-top:1px solid rgba(244,251,255,.22);
+}
+.menu__item:first-child{border-top:0}
+.menu__enlace{
+  display:flex;align-items:center;justify-content:center;
+  height:clamp(74px,11vh,108px);position:relative;
+  font-family:var(--display);font-weight:800;text-transform:uppercase;
+  font-size:clamp(2rem,4.6vw,3.4rem);letter-spacing:.02em;
+  color:var(--espuma);white-space:nowrap;
+}
+/* capa que entra por el borde más cercano al puntero */
+.marquesina{
+  position:absolute;inset:0;overflow:hidden;pointer-events:none;
+  background:var(--espuma);
+  transform:translate3d(0,101%,0);
+  transition:transform 600ms cubic-bezier(.16,1,.3,1);
+}
+.marquesina__ventana{height:100%;width:100%;overflow:hidden}
+.marquesina__inner{
+  height:100%;
+  transform:translate3d(0,-101%,0);
+  transition:transform 600ms cubic-bezier(.16,1,.3,1);
+}
+.marquesina--sin-transicion .marquesina,
+.marquesina--sin-transicion .marquesina__inner{transition:none}
+.marquesina__pista{
+  display:flex;align-items:center;height:100%;width:max-content;
+  animation:desfilar 22s linear infinite;will-change:transform;
+}
+@keyframes desfilar{from{transform:translate3d(0,0,0)}to{transform:translate3d(-50%,0,0)}}
+.marquesina__parte{display:flex;align-items:center;flex-shrink:0}
+.marquesina__parte span{
+  font-family:var(--display);font-weight:700;text-transform:uppercase;
+  font-size:clamp(1.8rem,4vw,3rem);line-height:1;padding:0 1.4vw;color:var(--tinta);
+}
+.marquesina__img{
+  width:190px;height:64px;margin:0 1.4vw;border-radius:999px;
+  background-size:cover;background-position:50% 50%;flex:none;
+}
+.menu--programas .marquesina__img{background-image:url("menu-programas.webp")}
+.menu--horarios .marquesina__img{background-image:url("menu-horarios.webp")}
+.menu--tienda .marquesina__img{background-image:url("menu-tienda.webp")}
+.menu--contacto .marquesina__img{background-image:url("menu-contacto.webp")}
+
+/* ---------- Andarivel nórdico: divisor entre secciones ---------- */
+/* ---------- Fundido entre secciones ----------
+   Cada sección arranca con un degradado del color de la anterior, así el
+   cambio de tono se resuelve en una franja y no en una línea. */
+.seccion::before,
+.cierre::before,
+.pie::before{
+  content:"";position:absolute;left:0;right:0;top:0;
+  height:var(--fundido,170px);z-index:1;pointer-events:none;
+  background:linear-gradient(180deg,var(--tono-previo,transparent),transparent);
+}
+/* sólo queda el fundido bajo el menú oscuro; entre secciones claras
+   ya no hace falta porque el color es continuo */
+#programas{--tono-previo:rgba(6,37,63,.32);--fundido:80px}
+.pie{position:relative}
+
+/* ---------- Silk: fondo de ondas por sección ---------- */
+.silk{
+  position:absolute;inset:0;z-index:0;
+  width:100%;height:100%;display:block;pointer-events:none;
+}
+/* el contenido de la sección se apoya por encima del lienzo */
+.seccion > .contenedor,
+.cierre > .contenedor{position:relative;z-index:1}
+
+/* ---------- Secciones ----------
+   Cada sección pinta su propia banda del fondo submarino. Los colores de
+   corte coinciden entre secciones vecinas, así el degradé es continuo sin
+   depender del alto de cada una. */
+.seccion{position:relative;padding:6.5rem 0}
+/* cielo tormentoso: la línea del agua cae justo al pie de la sección */
+#programas{
+  /* el cielo cubre la sección entera: arranca arriba y la línea del agua
+     queda al pie, con toda la tormenta de por medio */
+  padding-bottom:9rem;
+  background:
+    url("fondo-cielo.webp") center bottom / cover no-repeat,
+    linear-gradient(180deg,#0b2143,#12305c);
+}
+/* al ras de la superficie: rayos de luz y peces bajo el agua */
+#nosotros{
+  background:
+    url("fondo-agua.webp") center top / 100% auto no-repeat,
+    linear-gradient(180deg,#102845,#0b1c30);
+}
+/* cuerpo de agua: acá el fondo ya es pura profundidad, así que la
+   habitan un cardumen y burbujas que suben despacio */
+#tienda{background:linear-gradient(180deg,#0b1c30,#091524)}
+#nosotros::after,
+#tienda::after{
+  content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
+  background:url("burbujas.svg") repeat-y center top/420px auto;
+  opacity:.65;
+  animation:burbujear 52s linear infinite;
+}
+#tienda::after{animation-duration:74s;opacity:.45}
+@keyframes burbujear{
+  from{background-position:center 0}
+  to{background-position:center -720px}
+}
+/* el cardumen reemplaza al fundido en la zona profunda */
+#tienda::before{
+  height:100%;z-index:0;
+  background:url("cardumen.svg") no-repeat 92% 9%/min(46%,430px) auto;
+  opacity:.9;
+  animation:nadar 64s ease-in-out infinite alternate;
+}
+#tienda::before{background-position:88% 12%;background-size:min(46%,420px) auto;opacity:.75}
+@keyframes nadar{
+  from{transform:translate3d(-2%,0,0)}
+  to{transform:translate3d(4%,-14px,0)}
+}
+@media (prefers-reduced-motion:reduce){
+  #nosotros::after,#tienda::after,#tienda::before{animation:none}
+}
+/* la última sección se apoya sobre el lecho, que pinta el body */
+#sumate{background:linear-gradient(180deg,#091524,rgba(8,17,28,0))}
+/* las secciones ya no pintan color propio; dejan ver el degradé global */
+.seccion--claro,
+.seccion--medio,
+.seccion--hondo{background:transparent}
+.seccion__cabecera{max-width:60ch;margin-bottom:3.2rem}
+.seccion__titulo{font-size:clamp(2.4rem,5vw,3.9rem);color:var(--titulo);margin:1rem 0 1rem}
+.seccion__texto{color:var(--texto)}
+
+/* ---------- Galería circular de programas ---------- */
+.galeria{
+  position:relative;
+  /* a sangre: el carrusel usa todo el ancho de la pantalla */
+  width:100vw;margin-left:calc(50% - 50vw);
+}
+.galeria__lienzo{
+  width:100%;height:min(74vh,660px);
+  overflow:hidden;cursor:grab;
+  /* las tarjetas se desvanecen hacia los costados en vez de cortarse */
+  -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 8%,#000 92%,transparent 100%);
+  mask-image:linear-gradient(90deg,transparent 0,#000 8%,#000 92%,transparent 100%);
+}
+.galeria__lienzo:active{cursor:grabbing}
+.galeria__lienzo:focus-visible{outline:3px solid var(--hielo);outline-offset:4px}
+.galeria__lienzo canvas{display:block;touch-action:pan-y}
+.galeria__origen[hidden]{display:none}
+
+/* la ficha se lee sobre las nubes: velo suave detrás del texto */
+.ficha{
+  max-width:44rem;margin:.3rem auto 0;padding:1.4rem 1.25rem 1.6rem;text-align:center;
+  display:grid;justify-items:center;gap:.55rem;
+  background:radial-gradient(80% 92% at 50% 52%,rgba(4,14,26,.72),rgba(4,14,26,0) 68%);
+}
+.ficha__nombre{font-size:clamp(2.2rem,4.4vw,3.4rem);color:var(--titulo);text-shadow:0 2px 18px rgba(0,0,0,.7)}
+.ficha__texto{color:var(--texto);max-width:52ch;text-shadow:0 1px 10px rgba(0,0,0,.8)}
+.ficha .btn--hielo{margin-top:.8rem}
+
+/* métricas */
+/* ---------- Nosotros: mosaico del equipo ---------- */
+.mosaico{
+  margin-top:3.2rem;
+  display:grid;grid-template-columns:repeat(3,1fr);
+  grid-auto-rows:clamp(150px,17.5vw,265px);
+  grid-auto-flow:dense;
+  gap:1rem;
+}
+.mosaico__celda{
+  position:relative;padding:0;border:0;overflow:hidden;cursor:zoom-in;
+  border-radius:var(--radio);background:var(--panel);
+  box-shadow:0 12px 34px -22px var(--sombra);
+  transition:transform var(--transicion),box-shadow var(--transicion);
+}
+.mosaico__celda--grande{grid-column:span 2;grid-row:span 2}
+.mosaico__celda--alta{grid-row:span 2}
+.mosaico__celda:hover{transform:translateY(-3px);box-shadow:0 22px 46px -24px var(--sombra)}
+.mosaico__foto{
+  width:100%;height:100%;object-fit:cover;object-position:center 28%;
+  transition:transform 620ms cubic-bezier(.2,.7,.3,1);
+}
+.mosaico__celda:hover .mosaico__foto,
+.mosaico__celda:focus-visible .mosaico__foto{transform:scale(1.06)}
+.mosaico__pie{
+  position:absolute;inset:auto 0 0 0;padding:1.5rem .9rem .8rem;
+  background:linear-gradient(180deg,rgba(6,37,63,0),rgba(6,37,63,.86));
+  color:#fff;text-align:left;
+  font-family:var(--display);font-weight:700;text-transform:uppercase;
+  letter-spacing:.05em;font-size:1.02rem;line-height:1.1;
+  opacity:0;transform:translateY(10px);
+  transition:opacity var(--transicion),transform var(--transicion);
+}
+.mosaico__celda:hover .mosaico__pie,
+.mosaico__celda:focus-visible .mosaico__pie{opacity:1;transform:none}
+
+/* visor a pantalla completa */
+.visor{position:fixed;inset:0;z-index:90;display:flex;align-items:center;justify-content:center}
+.visor[hidden]{display:none}
+.visor__fondo{
+  position:absolute;inset:0;background:rgba(4,20,34,.82);
+  backdrop-filter:blur(6px);opacity:0;transition:opacity 300ms ease;
+}
+.visor.is-abierto .visor__fondo{opacity:1}
+.visor__figura{
+  position:relative;margin:0;z-index:2;
+  width:min(92vw,880px);max-height:86vh;
+  display:flex;flex-direction:column;
+  border-radius:var(--radio);overflow:hidden;
+  background:#0b2338;box-shadow:0 40px 90px -40px rgba(0,0,0,.8);
+  transform-origin:top left;
+}
+.visor__foto{width:100%;max-height:70vh;object-fit:contain;background:#0b2338}
+.visor__pie{padding:1.1rem 1.3rem 1.3rem;color:#fff}
+.visor__titulo{
+  font-family:var(--display);font-weight:700;text-transform:uppercase;
+  letter-spacing:.04em;font-size:clamp(1.3rem,3vw,2rem);line-height:1;margin:0;
+}
+.visor__texto{margin:.5rem 0 0;color:#c6ddef;font-size:.95rem}
+.visor__boton{
+  position:absolute;z-index:3;display:grid;place-items:center;
+  width:44px;height:44px;border:1px solid rgba(255,255,255,.28);
+  border-radius:50%;background:rgba(6,37,63,.55);color:#fff;
+  font-size:1.5rem;line-height:1;cursor:pointer;
+  transition:background var(--transicion),transform var(--transicion);
+}
+.visor__boton:hover{background:rgba(15,120,180,.85);transform:scale(1.06)}
+.visor__cerrar{top:max(1rem,3vh);right:max(1rem,3vw)}
+.visor__ante{left:max(.6rem,2vw)}
+.visor__sigue{right:max(.6rem,2vw)}
+body.sin-scroll{overflow:hidden}
+
+@media (max-width:900px){
+  .mosaico{grid-template-columns:repeat(2,1fr);grid-auto-rows:34vw;gap:.7rem}
+  .mosaico__celda--grande{grid-column:span 2;grid-row:span 1}
+  .mosaico__celda--alta{grid-row:span 1}
+  .mosaico__pie{font-size:.85rem;padding:1.2rem .7rem .6rem;opacity:1;transform:none}
+  .visor__figura{width:94vw}
+  .visor__boton{width:38px;height:38px}
+}
+@media (prefers-reduced-motion:reduce){
+  .mosaico__celda,.mosaico__foto,.visor__figura,.visor__fondo{transition:none!important}
+}
+
+/* ---------- Desplegables de Nosotros ---------- */
+/* los desplegables se salen del contenedor: son más anchos que el texto */
+.desplegables{
+  --ancho:min(100vw - 2.5rem,1520px);
+  width:var(--ancho);
+  margin-inline:calc((100% - var(--ancho)) / 2);
+  display:grid;gap:1rem;margin-top:3.2rem;
+}
+.panel{
+  border:1px solid var(--linea);border-radius:var(--radio);
+  background:var(--panel);backdrop-filter:blur(10px);
+  box-shadow:0 16px 40px -30px var(--sombra);
+  overflow:hidden;
+}
+.panel__cabeza{
+  display:flex;align-items:center;justify-content:space-between;gap:1rem;
+  padding:1.25rem 1.5rem;cursor:pointer;list-style:none;
+  transition:background var(--transicion);
+}
+.panel__cabeza::-webkit-details-marker{display:none}
+.panel__cabeza:hover{background:rgba(108,198,255,.08)}
+.panel__nombre{
+  font-family:var(--display);font-weight:800;text-transform:uppercase;
+  letter-spacing:.01em;line-height:1;font-size:clamp(1.5rem,3vw,2.3rem);
+  color:var(--titulo);
+}
+.panel__signo{
+  width:26px;height:26px;flex:none;color:var(--acento);
+  fill:none;stroke:currentColor;stroke-width:2.2;
+  stroke-linecap:round;stroke-linejoin:round;
+  transition:transform var(--transicion);
+}
+.panel[open] > .panel__cabeza .panel__signo{transform:rotate(180deg)}
+.panel__cuerpo{padding:0 1.5rem 1.6rem}
+.panel[open] > .panel__cuerpo{animation:desplegar 420ms cubic-bezier(.2,.7,.3,1)}
+@keyframes desplegar{
+  from{opacity:0;transform:translateY(-10px)}
+  to{opacity:1;transform:none}
+}
+.panel__intro{color:var(--texto-tenue);font-size:.95rem;margin-bottom:1.3rem;max-width:60ch}
+/* los de adentro del Vlog son más chicos */
+.panel--chico{background:var(--vidrio-hondo);margin-top:.9rem}
+.panel--chico .panel__cabeza{padding:.9rem 1.1rem}
+.panel--chico .panel__nombre{font-size:clamp(1.05rem,2vw,1.45rem);color:var(--texto)}
+.panel--chico[open] > .panel__cabeza .panel__nombre{color:var(--titulo)}
+.panel--chico .panel__signo{width:20px;height:20px}
+.panel--chico .panel__cuerpo{padding:0 1.1rem 1.2rem}
+.panel--chico .mosaico{margin-top:.4rem}
+/* el video es vertical: se muestra grande dentro de un marco a lo ancho,
+   con el propio fotograma desenfocado rellenando los costados */
+.vlog__marco{
+  position:relative;overflow:hidden;isolation:isolate;
+  display:flex;align-items:center;justify-content:center;
+  margin-top:.4rem;padding:1.6rem;
+  border-radius:14px;border:1px solid var(--linea);
+  background:#050d16;
+}
+.vlog__marco::before{
+  content:"";position:absolute;inset:-10%;z-index:-1;
+  background:url("vlog-poster.webp") center/cover no-repeat;
+  filter:blur(42px) saturate(130%) brightness(.45);
+}
+.vlog__video{
+  display:block;height:clamp(420px,78vh,880px);width:auto;max-width:100%;
+  border-radius:10px;border:1px solid rgba(255,255,255,.18);
+  background:#050d16;box-shadow:0 26px 60px -26px #000;
+}
+
+/* horarios */
+.horarios{width:100%;border-collapse:collapse;font-size:.95rem;background:var(--panel);backdrop-filter:blur(10px);border-radius:var(--radio);overflow:hidden}
+.horarios caption{text-align:left;color:var(--texto-tenue);font-size:.9rem;padding-bottom:1rem}
+.horarios th,.horarios td{padding:1rem .9rem;text-align:left;border-bottom:1px solid var(--linea)}
+.horarios thead th{
+  font-family:var(--mono);font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--bronce);font-weight:600;border-bottom-color:var(--bronce);
+}
+.horarios tbody tr{transition:background var(--transicion)}
+.horarios tbody tr:hover{background:rgba(108,198,255,.10)}
+.horarios td:first-child{font-family:var(--mono);color:var(--acento);white-space:nowrap}
+.horarios td:nth-child(2){color:var(--titulo);font-weight:700}
+.carril{
+  display:inline-block;padding:.2rem .6rem;border-radius:6px;font-family:var(--mono);
+  font-size:.72rem;letter-spacing:.08em;border:1px solid var(--linea);color:var(--texto-tenue);
+}
+
+/* ---------- Tienda (vitrina de demostración) ---------- */
+.tienda__cabecera{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:2rem;margin-bottom:3rem}
+.tienda__cabecera .seccion__cabecera{margin-bottom:0}
+/* cuatro destacados reales, uno por categoría */
+.vitrina{display:grid;grid-template-columns:repeat(4,1fr);gap:1.2rem}
+.vitrina__item{
+  display:flex;flex-direction:column;overflow:hidden;
+  border:1px solid var(--linea);border-radius:var(--radio);background:var(--panel);
+  backdrop-filter:blur(10px);
+  box-shadow:0 16px 34px -28px var(--sombra);
+  transition:transform var(--transicion),border-color var(--transicion),box-shadow var(--transicion);
+}
+.vitrina__item:hover{transform:translateY(-5px);border-color:var(--hielo);box-shadow:0 26px 44px -26px rgba(10,95,146,.5)}
+/* la vitrina muestra la foto real de cada producto */
+.vitrina__arte{
+  aspect-ratio:4/3;overflow:hidden;border-bottom:1px solid var(--linea);
+  background:radial-gradient(circle at 50% 40%,rgba(30,70,110,.55),rgba(6,19,33,.8) 72%);
+}
+.vitrina__foto{
+  width:100%;height:100%;object-fit:cover;display:block;
+  transition:transform var(--transicion);
+}
+.vitrina__item:hover .vitrina__foto{transform:scale(1.05)}
+.vitrina__cuerpo{padding:1.1rem 1.2rem 1.3rem;display:flex;flex-direction:column;gap:.35rem;flex:1}
+.vitrina__cat{font-family:var(--mono);font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:var(--bronce)}
+.vitrina__nombre{font-size:1.28rem;color:var(--titulo);line-height:1.05}
+.vitrina__precio{font-family:var(--display);font-size:1.6rem;color:var(--acento);margin-top:auto;padding-top:.6rem}
+.tienda__pie{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1.2rem;margin-top:2.5rem}
+.tienda__nota{font-size:.86rem;color:var(--texto-tenue);max-width:46ch}
+
+/* ---------- Formulario ---------- */
+.cierre{position:relative;padding:6.5rem 0 7rem;background:transparent;overflow:hidden}
+.cierre__grid{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:3.5rem;align-items:start}
+.cierre__texto{margin-top:1rem}
+.cierre__contacto{margin-top:2rem}
+.hero__nota{font-size:.86rem;color:var(--texto-tenue)}
+.hero__nota b{color:var(--acento);font-weight:700}
+.formulario{display:grid;gap:1.1rem;padding:2rem;border-radius:var(--radio);background:var(--panel);backdrop-filter:blur(10px);border:1px solid var(--linea);box-shadow:0 20px 44px -30px var(--sombra)}
+.campo{display:grid;gap:.45rem}
+.campo label{font-family:var(--mono);font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--texto-tenue)}
+.campo input,.campo select{
+  width:100%;padding:.85rem 1rem;border-radius:10px;
+  background:var(--fiordo);border:1.5px solid var(--linea);color:var(--titulo);
+  transition:border-color var(--transicion),box-shadow var(--transicion);
+}
+.campo input::placeholder{color:#6f8ea6}
+.campo input:focus,.campo select:focus{outline:none;border-color:var(--hielo);box-shadow:0 0 0 4px rgba(15,120,180,.16)}
+.campo select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' fill='none' stroke='%236cc6ff' stroke-width='1.8' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 1rem center;background-size:12px;padding-right:2.4rem}
+.campo.tiene-error input,.campo.tiene-error select{border-color:#ff8a7a}
+.error{font-size:.8rem;color:#ff8a7a;min-height:1.1em}
+.formulario .btn--hielo{width:100%;margin-top:.4rem}
+.form-nota{font-size:.8rem;color:var(--texto-tenue);text-align:center}
+.exito{
+  display:none;padding:1.1rem 1.2rem;border-radius:10px;
+  border:1px solid var(--acento);background:rgba(15,120,180,.22);
+  color:var(--titulo);font-size:.95rem;
+}
+.exito.visible{display:block}
+
+/* ---------- Pie ----------
+   Se apoya sobre los corales: un velo oscuro mantiene legible el texto
+   sin tapar la foto del lecho marino. */
+.pie{
+  background:linear-gradient(180deg,rgba(5,14,24,.18),rgba(5,14,24,.72) 42%,rgba(5,14,24,.88));
+  padding:4.5rem 0 2rem;
+}
+.pie__col a,.pie__lema,.pie__base{text-shadow:0 1px 8px rgba(0,0,0,.75)}
+.pie__grid{position:relative;z-index:1;display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:2rem}
+.pie__col h3{font-family:var(--mono);font-size:.72rem;letter-spacing:.2em;color:var(--bronce);text-transform:uppercase;font-weight:600;margin-bottom:1rem}
+.pie__col ul{list-style:none;padding:0;margin:0;display:grid;gap:.6rem}
+.pie__col a{font-size:.92rem;color:var(--texto);transition:color var(--transicion)}
+.pie__col a:hover{color:var(--acento)}
+.pie__lema{color:var(--texto-tenue);font-size:.92rem;max-width:34ch;margin-top:1rem}
+.pie__base{
+  margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--linea);
+  display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;
+  font-size:.82rem;color:var(--texto-tenue);
+}
+
+/* ---------- Revelado al hacer scroll ---------- */
+.revelar{opacity:0;transform:translateY(26px);transition:opacity 700ms ease,transform 700ms cubic-bezier(.2,.7,.3,1)}
+.revelar.visible{opacity:1;transform:none}
+
+/* ---------- Responsive ---------- */
+@media (max-width:1240px){
+  .hero{--carril:200px}
+}
+@media (max-width:1100px){
+  .hero{--carril:0px}
+  .hero__interior{padding-inline:clamp(1.25rem,4vw,2.5rem) 1.5rem}
+  #lanyard{display:none}
+}
+@media (max-width:1040px){
+  .vitrina{grid-template-columns:repeat(2,1fr)}
+  .pie__grid{grid-template-columns:1fr 1fr}
+}
+@media (max-width:900px){
+  /* los desplegables casi a sangre y el video ajustado al ancho */
+  .desplegables{--ancho:min(100vw - 1.4rem,1520px)}
+  .vlog__marco{padding:.7rem}
+  .vlog__video{height:auto;width:min(100%,440px);max-height:76vh}
+  /* en pantallas angostas las bandas del fondo se amplían para que el
+     cielo, los rayos y el lecho sigan leyéndose */
+  #programas{background-size:cover,auto}
+  #nosotros{background-size:250% auto,auto}
+  body{background-size:300% auto}
+  .galeria__lienzo{height:min(62vh,500px)}
+  .hero{min-height:auto;padding:7.5rem 0 4rem;align-items:flex-start}
+  /* en móvil el velo pasa a ser vertical */
+  .hero__velo{
+    background:linear-gradient(180deg,rgba(4,15,26,.86),rgba(4,15,26,.62) 45%,rgba(6,37,63,.92));
+  }
+  .hero__texto{max-width:100%}
+  .hero__titulo{font-size:clamp(2.9rem,10vw,4.6rem)}
+  /* en pantallas angostas la bandera entra entera, centrada detrás del texto */
+  .hero__emblema{
+    inset:0;width:100%;height:100%;
+    object-fit:contain;object-position:center 35%;
+    -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 10%,#000 90%,transparent 100%);
+    mask-image:linear-gradient(180deg,transparent 0,#000 10%,#000 90%,transparent 100%);
+  }
+  .cierre__grid{grid-template-columns:1fr;gap:2.5rem}
+}
+@media (max-width:620px){
+  /* en pantallas chicas los desplegables achican su respiro para que el
+     contenido de adentro (mosaico y video) gane ancho */
+  .panel__cabeza{padding:1rem 1.1rem}
+  .panel__cuerpo{padding:0 .85rem 1.1rem}
+  .panel--chico .panel__cabeza{padding:.8rem .85rem}
+  .panel--chico .panel__cuerpo{padding:0 .6rem .9rem}
+  .vlog__marco{padding:.5rem}
+  body{font-size:16px}
+  .seccion{padding:4.5rem 0}
+  .galeria__lienzo{height:min(58vh,380px)}
+  .vitrina{grid-template-columns:1fr}
+  .pie__grid{grid-template-columns:1fr}
+  .tabla-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .horarios{min-width:560px}
+  .hero__titulo{font-size:clamp(2.5rem,12.5vw,3.6rem)}
+  .hero__sellos{gap:.45rem .75rem}
+  .hero__sello b{font-size:.84rem;letter-spacing:.1em}
+  /* sin separadores cuando los sellos se apilan */
+  .hero__sello:not(:last-child)::after{display:none}
+  .hero__cta{width:100%}
+  .hero__cta .btn--runa{width:100%;padding-inline:1.6rem;font-size:1.02rem;letter-spacing:.1em}
+}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important}
+  html{scroll-behavior:auto}
+  .revelar{opacity:1;transform:none}
+}

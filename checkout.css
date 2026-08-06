@@ -1,0 +1,206 @@
+/* ============================================================
+   AquaRagnar · Checkout — ESTILOS
+   Usa las variables de tienda.html, así que sigue la paleta del
+   sitio si algún día cambia.
+   ============================================================ */
+
+/* ---------- Overlay ---------- */
+.co{
+  position:fixed;inset:0;z-index:120;
+  display:flex;align-items:center;justify-content:center;
+  padding:1.25rem;
+}
+.co[hidden]{display:none}
+.co__fondo{
+  position:absolute;inset:0;
+  background:rgba(4,16,28,.78);
+  backdrop-filter:blur(6px);
+  opacity:0;transition:opacity 240ms ease;
+}
+.co.is-abierto .co__fondo{opacity:1}
+body.co-abierto{overflow:hidden}
+
+/* ---------- Panel ---------- */
+.co__caja{
+  position:relative;z-index:1;
+  width:min(100%,520px);max-height:92vh;overflow-y:auto;
+  background:var(--panel,#fff);
+  border-radius:18px;
+  border:1px solid var(--linea,rgba(6,37,63,.14));
+  box-shadow:0 40px 90px -40px rgba(0,0,0,.75);
+  padding:2rem 1.9rem 1.9rem;
+  opacity:0;transform:translateY(14px) scale(.98);
+  transition:opacity 260ms ease,transform 300ms cubic-bezier(.2,.7,.3,1);
+}
+.co.is-abierto .co__caja{opacity:1;transform:none}
+.co__cerrar{
+  position:absolute;top:.9rem;right:1rem;
+  border:0;background:none;cursor:pointer;
+  font-size:1.2rem;line-height:1;color:var(--texto-tenue,#547287);
+  padding:.35rem .5rem;border-radius:8px;
+}
+.co__cerrar:hover{color:var(--espuma,#06253f);background:rgba(6,37,63,.06)}
+
+/* ---------- Tipografía interna ---------- */
+.co__paso{
+  font-family:var(--mono,monospace);font-size:.68rem;font-weight:600;
+  letter-spacing:.2em;text-transform:uppercase;
+  color:var(--bronce,#9c6329);margin:0 0 .5rem;
+}
+.co__titulo{
+  font-family:var(--display,sans-serif);font-weight:800;text-transform:uppercase;
+  font-size:clamp(1.9rem,5vw,2.6rem);line-height:.95;letter-spacing:-.01em;
+  color:var(--espuma,#06253f);margin:0 0 .6rem;
+}
+.co__subtitulo{
+  font-family:var(--mono,monospace);font-size:.7rem;font-weight:600;
+  letter-spacing:.18em;text-transform:uppercase;
+  color:var(--texto-tenue,#547287);margin:0 0 .8rem;
+}
+.co__bajada{color:var(--texto,#173a52);font-size:.95rem;margin:0 0 1.4rem}
+.co__bajada b{color:var(--espuma,#06253f)}
+.co__pendiente{color:var(--bronce,#9c6329)}
+.co__nota{
+  font-size:.78rem;color:var(--texto-tenue,#547287);
+  text-align:center;margin:.9rem 0 0;min-height:1.1em;
+}
+
+/* ---------- Formulario ---------- */
+.co__form{display:grid;gap:.9rem}
+.co__campo{display:grid;gap:.35rem}
+.co__campo label{
+  font-family:var(--mono,monospace);font-size:.66rem;font-weight:600;
+  letter-spacing:.18em;text-transform:uppercase;color:var(--texto-tenue,#547287);
+}
+.co__campo input{
+  width:100%;padding:.8rem .95rem;border-radius:10px;font:inherit;
+  background:var(--fiordo,#eaf5fd);
+  border:1.5px solid var(--linea,rgba(6,37,63,.14));
+  color:var(--espuma,#06253f);
+  transition:border-color 200ms ease,box-shadow 200ms ease;
+}
+.co__campo input:focus{
+  outline:none;border-color:var(--hielo,#0f78b4);
+  box-shadow:0 0 0 4px rgba(15,120,180,.16);
+}
+.co__campo.mal input{border-color:#c0392b}
+.co__error{font-size:.76rem;color:#c0392b;margin:0;min-height:1em}
+
+/* ---------- Botones ---------- */
+.co__btn{
+  display:flex;align-items:center;justify-content:center;gap:.6rem;
+  width:100%;padding:1rem 1.2rem;margin-top:.4rem;
+  border:0;border-radius:12px;cursor:pointer;
+  font-family:var(--display,sans-serif);font-weight:800;
+  text-transform:uppercase;letter-spacing:.04em;font-size:1.15rem;line-height:1;
+  transition:transform 200ms ease,box-shadow 200ms ease,background 200ms ease;
+}
+.co__btn--principal{
+  background:linear-gradient(180deg,var(--hielo,#0f78b4),var(--hielo-claro,#0a5f92));
+  color:#fff;box-shadow:0 14px 30px -16px rgba(10,95,146,.9);
+}
+.co__btn--principal:hover{transform:translateY(-2px)}
+/* verde de WhatsApp */
+.co__btn--wa{
+  background:#25d366;color:#04331a;
+  box-shadow:0 16px 34px -16px rgba(37,211,102,.8);
+  margin-top:1.4rem;padding:1.15rem 1.2rem;font-size:1.2rem;
+}
+.co__btn--wa:hover{background:#1ebe5a;transform:translateY(-2px)}
+.co__btn--wa svg{width:26px;height:26px;flex:none}
+.co__btn--suave{
+  background:transparent;color:var(--texto-tenue,#547287);
+  font-size:.9rem;letter-spacing:.06em;margin-top:.3rem;padding:.7rem;
+}
+.co__btn--suave:hover{color:var(--espuma,#06253f)}
+
+/* ---------- Confirmación ---------- */
+.co__ok{
+  width:56px;height:56px;margin:0 auto 1rem;border-radius:50%;
+  display:grid;place-items:center;
+  background:rgba(37,211,102,.16);color:#1a9e4b;
+}
+.co__ok svg{width:28px;height:28px}
+.co__total{
+  display:flex;align-items:baseline;justify-content:space-between;gap:1rem;
+  padding:1rem 1.2rem;border-radius:12px;margin-bottom:1.2rem;
+  background:var(--fiordo,#eaf5fd);border:1px solid var(--linea,rgba(6,37,63,.14));
+}
+.co__total span{
+  font-family:var(--mono,monospace);font-size:.68rem;font-weight:600;
+  letter-spacing:.18em;text-transform:uppercase;color:var(--texto-tenue,#547287);
+}
+.co__total b{
+  font-family:var(--display,sans-serif);font-size:2.1rem;font-weight:800;
+  color:var(--hielo,#0f78b4);line-height:1;
+}
+
+/* ---------- Datos bancarios ---------- */
+.co__banco{
+  border:1px solid var(--linea,rgba(6,37,63,.14));
+  border-radius:12px;padding:1.1rem 1.2rem;
+}
+.co__dato{
+  display:flex;align-items:center;gap:.8rem;
+  padding:.6rem 0;border-bottom:1px solid var(--linea,rgba(6,37,63,.14));
+}
+.co__dato:last-of-type{border-bottom:0}
+.co__dato-et{
+  font-family:var(--mono,monospace);font-size:.65rem;font-weight:600;
+  letter-spacing:.16em;text-transform:uppercase;
+  color:var(--texto-tenue,#547287);width:66px;flex:none;
+}
+.co__dato-val{
+  flex:1;font-family:var(--mono,monospace);font-size:.92rem;
+  color:var(--espuma,#06253f);word-break:break-all;
+}
+.co__copiar{
+  flex:none;border:1px solid var(--marea,#1c5f8f);background:transparent;
+  color:var(--hielo,#0f78b4);cursor:pointer;
+  font-size:.7rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+  padding:.35rem .6rem;border-radius:7px;transition:all 200ms ease;
+}
+.co__copiar:hover{background:var(--hielo,#0f78b4);color:#fff}
+.co__copiar.ok{background:#25d366;border-color:#25d366;color:#04331a}
+
+/* ---------- QR ---------- */
+.co__qr{margin:1rem 0 0;text-align:center}
+.co__qr img{
+  width:min(190px,60%);height:auto;margin:0 auto;border-radius:10px;
+  background:#fff;padding:.5rem;border:1px solid var(--linea,rgba(6,37,63,.14));
+}
+.co__qr figcaption{font-size:.74rem;color:var(--texto-tenue,#547287);margin-top:.5rem}
+.co__qr--vacio{
+  display:grid;gap:.4rem;place-items:center;
+  padding:1.6rem 1rem;border-radius:10px;
+  border:2px dashed var(--linea,rgba(6,37,63,.24));
+  color:var(--texto-tenue,#547287);
+}
+.co__qr--vacio span{
+  font-family:var(--mono,monospace);font-size:.72rem;
+  letter-spacing:.16em;text-transform:uppercase;
+}
+.co__qr--vacio small{font-size:.7rem;line-height:1.4;max-width:34ch}
+.co__qr--vacio code{
+  font-family:var(--mono,monospace);
+  background:rgba(6,37,63,.08);padding:.1rem .3rem;border-radius:4px;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width:520px){
+  .co{padding:0;align-items:flex-end}
+  .co__caja{
+    width:100%;max-height:94vh;
+    border-radius:18px 18px 0 0;padding:1.6rem 1.2rem 1.4rem;
+    transform:translateY(28px);
+  }
+  .co__dato{flex-wrap:wrap;gap:.4rem .8rem}
+  .co__dato-et{width:100%}
+  .co__dato-val{flex:1 1 60%;font-size:.86rem}
+  .co__btn{font-size:1.05rem;padding:.95rem 1rem}
+  .co__btn--wa{font-size:1.05rem}
+}
+
+@media (prefers-reduced-motion:reduce){
+  .co__fondo,.co__caja,.co__btn,.co__copiar{transition:none}
+}

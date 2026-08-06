@@ -57,7 +57,6 @@ p{margin:0}
   font-family:var(--mono);font-size:.72rem;font-weight:600;letter-spacing:.22em;
   text-transform:uppercase;color:var(--bronce);display:flex;align-items:center;gap:.7rem;
 }
-.eyebrow::before{content:"";width:26px;height:1px;background:var(--bronce);opacity:.7;flex:none}
 .saltar{position:absolute;left:-9999px}
 .saltar:focus{left:1rem;top:1rem;z-index:100;background:var(--hielo);color:#fff;padding:.6rem 1rem;border-radius:8px}
 .sprite{position:absolute;width:0;height:0;overflow:hidden}
@@ -232,6 +231,7 @@ p{margin:0}
   html{scroll-behavior:auto}
 }
 </style>
+<link rel="stylesheet" href="checkout.css">
 </head>
 <body>
 <a class="saltar" href="#catalogo">Saltar al catálogo</a>
@@ -263,7 +263,7 @@ p{margin:0}
   <!-- ============ CABECERA ============ -->
   <section class="cabecera">
     <div class="contenedor">
-      <p class="eyebrow">Tienda del clan</p>
+      <p class="eyebrow">Tienda AquaRagnar</p>
       <h1 class="cabecera__titulo">Equipate<br>para el <em>agua</em>.</h1>
       <p class="cabecera__bajada">
         Lo que usamos todos los días en la pileta: indumentaria, accesorios de entrenamiento
@@ -315,7 +315,7 @@ p{margin:0}
   <div class="carrito__pie">
     <div class="total"><span>Total</span><b id="totalCarrito">$0</b></div>
     <button class="btn btn--hielo" id="finalizar" type="button" disabled>Finalizar compra</button>
-    <p class="carrito__nota" id="notaCarrito">Podés retirar en la pileta o coordinar el envío al confirmar.</p>
+    <p class="carrito__nota" id="notaCarrito">Pagás por transferencia y nos mandás el comprobante por WhatsApp.</p>
   </div>
 </aside>
 
@@ -515,15 +515,55 @@ p{margin:0}
   });
 
   finalizar.addEventListener("click", function () {
-    /* CAMBIO: el cobro vive en la tienda oficial; desde acá se arma el pedido */
-    nota.innerHTML = 'La compra se cierra en la tienda oficial. ' +
-      '<a href="https://aquaragnar.mitiendanube.com/" target="_blank" rel="noopener"><b>Ir a pagar ↗</b></a>';
-    nota.style.color = "var(--hielo-claro)";
+    /* checkout manual por transferencia (checkout-*.js) */
+    if (window.AR_CHECKOUT && window.AR_CHECKOUT.iniciar) {
+      moverCarrito(false);
+      window.AR_CHECKOUT.iniciar();
+      return;
+    }
+    /* respaldo por si los scripts del checkout no cargaron */
+    nota.innerHTML = 'No pudimos abrir el checkout. ' +
+      '<a href="https://aquaragnar.mitiendanube.com/" target="_blank" rel="noopener"><b>Comprar en la tienda oficial ↗</b></a>';
   });
+
+  /* ---------- Puente con el checkout ----------
+     Lo único que el módulo de checkout necesita saber del carrito. */
+  window.AR_CARRITO = {
+    items: function () {
+      return Object.keys(bolso).map(function (id) {
+        var p = buscar(id);
+        return {
+          id: id,
+          nombre: p.nombre,
+          cat: p.cat,
+          precio: p.precio,
+          cantidad: bolso[id],
+          subtotal: p.precio * bolso[id]
+        };
+      });
+    },
+    total: function () {
+      return Object.keys(bolso).reduce(function (t, id) {
+        return t + buscar(id).precio * bolso[id];
+      }, 0);
+    },
+    unidades: function () {
+      return Object.keys(bolso).reduce(function (n, id) { return n + bolso[id]; }, 0);
+    },
+    vaciar: function () { bolso = {}; pintarCarrito(); },
+    cerrar: function () { moverCarrito(false); },
+    formato: function (n) { return plata.format(n); }
+  };
 
   pintarCatalogo();
   pintarCarrito();
 })();
 </script>
+
+<!-- ============ CHECKOUT POR TRANSFERENCIA ============ -->
+<script src="checkout-config.js"></script>
+<script src="checkout-estado.js"></script>
+<script src="checkout-correos.js"></script>
+<script src="checkout-modal.js"></script>
 </body>
 </html>

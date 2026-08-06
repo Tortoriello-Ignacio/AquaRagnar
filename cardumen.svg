@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="820" height="230" viewBox="0 0 820 230" fill="none">
+<defs><g id="pez" fill="#a8dcff"><path d="M0 0c7-7 22-11 33-11 12 0 22 4 29 11-7 7-17 11-29 11-11 0-26-4-33-11z"/><path d="M0 0-14-10-11 0-14 10z"/><path d="M40-11c2-5 6-8 10-9-1 4-2 7-2 9z"/><circle cx="53" cy="-2.5" r="1.9" fill="#0a1a2c"/></g></defs>
+<g transform="translate(60 40) scale(1.0)" opacity="0.3"><use href="#pez"/></g>
+<g transform="translate(170 110) scale(0.7)" opacity="0.22"><use href="#pez"/></g>
+<g transform="translate(300 58) scale(0.55)" opacity="0.18"><use href="#pez"/></g>
+<g transform="translate(420 140) scale(0.85)" opacity="0.26"><use href="#pez"/></g>
+<g transform="translate(560 70) scale(0.6)" opacity="0.2"><use href="#pez"/></g>
+<g transform="translate(690 132) scale(0.45)" opacity="0.15"><use href="#pez"/></g>
+<g transform="translate(250 178) scale(0.5)" opacity="0.16"><use href="#pez"/></g>
+<g transform="translate(520 196) scale(0.42)" opacity="0.14"><use href="#pez"/></g>
+</svg>

@@ -437,7 +437,7 @@ if (lienzo && origen) {
     actual = items[i];
     if (!fNombre) return;
     fNombre.textContent = actual.texto;
-    fDetalle.textContent = actual.detalle;
+    if (fDetalle) fDetalle.textContent = actual.detalle;
     fTexto.textContent = actual.descripcion;
   };
 
