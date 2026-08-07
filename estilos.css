@@ -58,7 +58,7 @@ html{
 body{
   margin:0;
   /* el lecho marino queda anclado al final del documento */
-  background:url("fondo-lecho.webp") center bottom / 115% auto no-repeat;
+  background:url("assets/images/fondo-lecho.webp") center bottom / 115% auto no-repeat;
   color:var(--texto);
   font-family:var(--body);
   font-size:17px;
@@ -99,7 +99,7 @@ address{font-style:normal}
   backdrop-filter:blur(12px) saturate(130%);
   border-bottom-color:var(--nav-linea);
 }
-.nav__fila{display:flex;align-items:center}
+.nav__fila{position:relative;display:flex;align-items:center;gap:1rem}
 .marca{display:inline-flex;align-items:center;flex:none}
 /* la barra es oscura siempre -> la marca va clara en los dos estados */
 .marca__nombre{
@@ -153,7 +153,7 @@ address{font-style:normal}
 }
 .hero::before{
   content:"";position:absolute;inset:0;z-index:-3;
-  background:url("bandera-fondo.webp") center/cover no-repeat;
+  background:url("assets/images/bandera-fondo.webp") center/cover no-repeat;
   transform:scale(1.08);
 }
 /* velo oscuro a la izquierda (legibilidad) + fundido inferior hacia el menú */
@@ -172,6 +172,15 @@ address{font-style:normal}
       transparent 66%,
       rgba(6,37,63,.85) 100%);
 }
+
+/* El torpedo se arrastra por encima del hero. Como su canvas no recibe
+   clicks, el puntero cae sobre el titular y el navegador empezaba a
+   seleccionar las letras. El hero es puro texto decorativo, así que no
+   se selecciona; los botones y enlaces siguen funcionando igual. */
+.hero{-webkit-user-select:none;user-select:none}
+.hero__emblema{pointer-events:none;-webkit-user-drag:none}
+/* mientras se arrastra, tampoco se selecciona nada del resto de la página */
+body.arrastrando-torpedo{-webkit-user-select:none;user-select:none}
 
 /* torpedo 3D colgando de la esquina superior izquierda */
 #lanyard{
@@ -214,6 +223,10 @@ address{font-style:normal}
   background:linear-gradient(180deg,#54aef4 4%,#1e86e0 52%,#0c5cab 100%);
   -webkit-background-clip:text;background-clip:text;
 }
+/* dos líneas: el nombre grande en mayúsculas y el lema más chico debajo.
+   Van en em, así siguen el clamp del h1 sin tocar márgenes ni anchos. */
+.hero__titulo .lin--grande{font-size:1em;text-wrap:balance}
+.hero__titulo .lin--lema{font-size:.62em;text-transform:none}
 
 /* sellos (aguas abiertas · disciplina · equipo) */
 .hero__sellos{
@@ -257,81 +270,6 @@ address{font-style:normal}
 .btn--runa:hover::after{background:linear-gradient(180deg,rgba(19,72,124,.92),rgba(8,34,60,.95))}
 .btn--runa:active{transform:translateY(0)}
 
-/* ---------- Menú fluido (puerto de FlowingMenu, sin gsap) ---------- */
-/* el menú hace de puente entre el hero y el cielo tormentoso */
-.menufluido{background:linear-gradient(180deg,#06121e,#0e2a50);overflow:hidden}
-.menufluido__lista{display:flex;flex-direction:column;margin:0;padding:0;list-style:none}
-.menu__item{
-  position:relative;overflow:hidden;text-align:center;
-  border-top:1px solid rgba(244,251,255,.22);
-}
-.menu__item:first-child{border-top:0}
-.menu__enlace{
-  display:flex;align-items:center;justify-content:center;
-  height:clamp(74px,11vh,108px);position:relative;
-  font-family:var(--display);font-weight:800;text-transform:uppercase;
-  font-size:clamp(2rem,4.6vw,3.4rem);letter-spacing:.02em;
-  color:var(--espuma);white-space:nowrap;
-}
-/* capa que entra por el borde más cercano al puntero */
-.marquesina{
-  position:absolute;inset:0;overflow:hidden;pointer-events:none;
-  background:var(--espuma);
-  transform:translate3d(0,101%,0);
-  transition:transform 600ms cubic-bezier(.16,1,.3,1);
-}
-.marquesina__ventana{height:100%;width:100%;overflow:hidden}
-.marquesina__inner{
-  height:100%;
-  transform:translate3d(0,-101%,0);
-  transition:transform 600ms cubic-bezier(.16,1,.3,1);
-}
-.marquesina--sin-transicion .marquesina,
-.marquesina--sin-transicion .marquesina__inner{transition:none}
-.marquesina__pista{
-  display:flex;align-items:center;height:100%;width:max-content;
-  animation:desfilar 22s linear infinite;will-change:transform;
-}
-@keyframes desfilar{from{transform:translate3d(0,0,0)}to{transform:translate3d(-50%,0,0)}}
-.marquesina__parte{display:flex;align-items:center;flex-shrink:0}
-.marquesina__parte span{
-  font-family:var(--display);font-weight:700;text-transform:uppercase;
-  font-size:clamp(1.8rem,4vw,3rem);line-height:1;padding:0 1.4vw;color:var(--tinta);
-}
-.marquesina__img{
-  width:190px;height:64px;margin:0 1.4vw;border-radius:999px;
-  background-size:cover;background-position:50% 50%;flex:none;
-}
-.menu--programas .marquesina__img{background-image:url("menu-programas.webp")}
-.menu--horarios .marquesina__img{background-image:url("menu-horarios.webp")}
-.menu--tienda .marquesina__img{background-image:url("menu-tienda.webp")}
-.menu--contacto .marquesina__img{background-image:url("menu-contacto.webp")}
-
-/* ---------- Andarivel nórdico: divisor entre secciones ---------- */
-/* ---------- Fundido entre secciones ----------
-   Cada sección arranca con un degradado del color de la anterior, así el
-   cambio de tono se resuelve en una franja y no en una línea. */
-.seccion::before,
-.cierre::before,
-.pie::before{
-  content:"";position:absolute;left:0;right:0;top:0;
-  height:var(--fundido,170px);z-index:1;pointer-events:none;
-  background:linear-gradient(180deg,var(--tono-previo,transparent),transparent);
-}
-/* sólo queda el fundido bajo el menú oscuro; entre secciones claras
-   ya no hace falta porque el color es continuo */
-#programas{--tono-previo:rgba(6,37,63,.32);--fundido:80px}
-.pie{position:relative}
-
-/* ---------- Silk: fondo de ondas por sección ---------- */
-.silk{
-  position:absolute;inset:0;z-index:0;
-  width:100%;height:100%;display:block;pointer-events:none;
-}
-/* el contenido de la sección se apoya por encima del lienzo */
-.seccion > .contenedor,
-.cierre > .contenedor{position:relative;z-index:1}
-
 /* ---------- Secciones ----------
    Cada sección pinta su propia banda del fondo submarino. Los colores de
    corte coinciden entre secciones vecinas, así el degradé es continuo sin
@@ -343,34 +281,22 @@ address{font-style:normal}
      queda al pie, con toda la tormenta de por medio */
   padding-bottom:9rem;
   background:
-    url("fondo-cielo.webp") center bottom / cover no-repeat,
+    url("assets/images/fondo-cielo.webp") center bottom / cover no-repeat,
     linear-gradient(180deg,#0b2143,#12305c);
 }
 /* al ras de la superficie: rayos de luz y peces bajo el agua */
 #nosotros{
   background:
-    url("fondo-agua.webp") center top / 100% auto no-repeat,
+    url("assets/images/fondo-agua.webp") center top / 100% auto no-repeat,
     linear-gradient(180deg,#102845,#0b1c30);
 }
-/* cuerpo de agua: acá el fondo ya es pura profundidad, así que la
-   habitan un cardumen y burbujas que suben despacio */
+/* cuerpo de agua: acá el fondo ya es pura profundidad, así que lo
+   habita un cardumen */
 #tienda{background:linear-gradient(180deg,#0b1c30,#091524)}
-#nosotros::after,
-#tienda::after{
-  content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
-  background:url("burbujas.svg") repeat-y center top/420px auto;
-  opacity:.65;
-  animation:burbujear 52s linear infinite;
-}
-#tienda::after{animation-duration:74s;opacity:.45}
-@keyframes burbujear{
-  from{background-position:center 0}
-  to{background-position:center -720px}
-}
 /* el cardumen reemplaza al fundido en la zona profunda */
 #tienda::before{
   height:100%;z-index:0;
-  background:url("cardumen.svg") no-repeat 92% 9%/min(46%,430px) auto;
+  background:url("assets/icons/cardumen.svg") no-repeat 92% 9%/min(46%,430px) auto;
   opacity:.9;
   animation:nadar 64s ease-in-out infinite alternate;
 }
@@ -380,7 +306,7 @@ address{font-style:normal}
   to{transform:translate3d(4%,-14px,0)}
 }
 @media (prefers-reduced-motion:reduce){
-  #nosotros::after,#tienda::after,#tienda::before{animation:none}
+  #tienda::before{animation:none}
 }
 /* la última sección se apoya sobre el lecho, que pinta el body */
 #sumate{background:linear-gradient(180deg,#091524,rgba(8,17,28,0))}
@@ -391,6 +317,16 @@ address{font-style:normal}
 .seccion__cabecera{max-width:60ch;margin-bottom:3.2rem}
 .seccion__titulo{font-size:clamp(2.4rem,5vw,3.9rem);color:var(--titulo);margin:1rem 0 1rem}
 .seccion__texto{color:var(--texto)}
+/* ADN del equipo: párrafo más grande, más ancho y con un halo oscuro
+   que lo despega de la foto del fondo (que tiene mucho detalle). */
+#nosotros .seccion__cabecera{max-width:min(100%,58rem)}
+#nosotros .seccion__texto{
+  font-size:clamp(1.08rem,1.45vw,1.32rem);
+  line-height:1.55;
+  font-weight:500;
+  color:#eaf5ff;
+  text-shadow:0 2px 12px rgba(2,10,20,.9),0 0 34px rgba(2,10,20,.7);
+}
 
 /* ---------- Galería circular de programas ---------- */
 .galeria{
@@ -563,7 +499,7 @@ body.sin-scroll{overflow:hidden}
 }
 .vlog__marco::before{
   content:"";position:absolute;inset:-10%;z-index:-1;
-  background:url("vlog-poster.webp") center/cover no-repeat;
+  background:url("assets/videos/vlog-poster.webp") center/cover no-repeat;
   filter:blur(42px) saturate(130%) brightness(.45);
 }
 .vlog__video{

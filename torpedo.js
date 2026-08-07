@@ -591,6 +591,14 @@ if (!corresponde) {
     raycaster.setFromCamera(pointer, camera);
     if (raycaster.intersectObject(buoyPivot, true).length === 0) return;
 
+    // Al agarrar el torpedo hay que frenar la seleccion de texto: el canvas
+    // tiene pointer-events:none, asi que el click cae sobre el texto de abajo
+    // y el navegador arranca a seleccionar mientras se arrastra.
+    event.preventDefault();
+    const seleccion = window.getSelection && window.getSelection();
+    if (seleccion && seleccion.removeAllRanges) seleccion.removeAllRanges();
+    document.body.classList.add('arrastrando-torpedo');
+
     const world = pointerToWorld(event);
     dragTarget = world.distanceTo(nose.pos) < world.distanceTo(tail.pos) ? nose : tail;
     dragOffset.copy(dragTarget.pos).sub(world);
@@ -606,6 +614,7 @@ if (!corresponde) {
   const endDrag = () => {
     dragTarget = null;
     document.body.style.cursor = 'auto';
+    document.body.classList.remove('arrastrando-torpedo');
   };
   window.addEventListener('pointerup', endDrag);
   window.addEventListener('pointercancel', endDrag);

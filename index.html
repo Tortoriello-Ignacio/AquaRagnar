@@ -11,7 +11,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;700;800&family=Grenze+Gotisch:wght@500;600;700&family=JetBrains+Mono:wght@400;600&family=Manrope:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="estilos.css">
-<link rel="preload" as="image" href="bandera-hero.webp" fetchpriority="high">
+<link rel="stylesheet" href="pillnav.css">
+<link rel="preload" as="image" href="assets/images/bandera-hero.webp" fetchpriority="high">
 
 <!-- de dónde saca el navegador three.js para el torpedo colgante -->
 <script type="importmap">
@@ -54,6 +55,8 @@
     <a class="marca" href="#inicio" aria-label="AquaRagnar, inicio">
       <span class="marca__nombre">Aqua<span>Ragnar</span></span>
     </a>
+    <!-- las pastillas las arma pillnav.js a partir de AR.MENU -->
+    <nav class="pillnav" id="pillnav" aria-label="Secciones"></nav>
   </div>
 </header>
 
@@ -61,7 +64,7 @@
 
   <!-- ============ HERO ============ -->
   <section class="hero" id="inicio">
-    <img class="hero__emblema" src="bandera-hero.webp" width="1800" height="1350" fetchpriority="high"
+    <img class="hero__emblema" src="assets/images/bandera-hero.webp" width="1800" height="1350" fetchpriority="high"
          alt="Bandera azul de AquaRagnar: un guerrero nórdico con hacha sobre un drakkar entre olas, dentro de un escudo rúnico.">
     <div class="hero__velo" aria-hidden="true"></div>
     <div id="lanyard" aria-hidden="true"></div>
@@ -71,9 +74,8 @@
         <div class="hero__filete" aria-hidden="true"><svg><use href="#ico-yelmo"/></svg></div>
 
         <h1 class="hero__titulo">
-          <span class="lin">Nada.</span>
-          <span class="lin lin--azul">Entrena.</span>
-          <span class="lin">Supérate.</span>
+          <span class="lin lin--grande">Equipo de nataci&oacute;n</span>
+          <span class="lin lin--azul lin--lema">Nada, entrena, superate</span>
         </h1>
 
         <ul class="hero__sellos">
@@ -88,12 +90,6 @@
       </div>
     </div>
   </section>
-
-  <!-- ============ MENÚ FLUIDO ============ -->
-  <!-- los ítems los arma render.js a partir de AR.MENU -->
-  <nav class="menufluido" aria-label="Secciones">
-    <ul class="menufluido__lista" id="menuFluido"></ul>
-  </nav>
 
   <!-- ============ PROGRAMAS ============ -->
   <section class="seccion seccion--hondo" id="programas" data-silk="#a6d0ea">
@@ -130,11 +126,11 @@
         <p class="eyebrow">Nosotros</p>
         <h2 class="seccion__titulo">ADN del equipo</h2>
         <p class="seccion__texto">
-          En AquaRagnar el agua es una escuela de carácter. Con Jonathan (Jony) al frente,
-          entrenamos convencidos de que la disciplina que se construye brazada a brazada no se queda
-          en la pileta: la cabeza que aprende a sostener el plan cuando cuesta es la misma que después
-          enfrenta lo que venga afuera. Hay lugar para todas las edades en Escuela, Entrenamiento,
-          Competencia y Máster, y Aguas abiertas. Se arranca donde uno está; el hábito hace el resto.
+          En AquaRagnar entrenamos la cabeza y el cuerpo. Guiados por Jony, trabajamos para que
+          la disciplina del agua te acompañe en el día a día, porque la cabeza que aprende a no
+          aflojar en la pileta es la misma que después le hace frente a los desafíos de todos
+          los días. Sumate a cualquiera de nuestras áreas (Escuela, Entrenamiento, Competencia,
+          Máster o Aguas Abiertas) sin importar tu nivel inicial.
         </p>
       </header>
 
@@ -158,10 +154,10 @@
               <div class="panel__cuerpo">
                 <div class="vlog__marco">
                   <video class="vlog__video" controls preload="none" playsinline
-                         poster="vlog-poster.webp" width="464" height="832">
-                    <source src="vlog-aquaragnar.mp4" type="video/mp4">
+                         poster="assets/videos/vlog-poster.webp" width="464" height="832">
+                    <source src="assets/videos/vlog-aquaragnar.mp4" type="video/mp4">
                     Tu navegador no puede reproducir este video.
-                    <a href="vlog-aquaragnar.mp4">Descargalo acá</a>.
+                    <a href="assets/videos/vlog-aquaragnar.mp4">Descargalo acá</a>.
                   </video>
                 </div>
               </div>
@@ -211,8 +207,8 @@
           <p class="eyebrow">Tienda AquaRagnar</p>
           <h2 class="seccion__titulo">Equipate<br>para el agua</h2>
           <p class="seccion__texto">
-            Antiparras, manoplas, indumentaria y suplementos: 29 productos
-            en el catálogo, con retiro en la pileta o envío a todo el país.
+            Accesorios y suplementación, mallas, indumentaria oficial de AquaRagnar.
+            Todo el equipamiento que necesitás, con retiro en la pileta o envío a domicilio.
           </p>
         </header>
         <a class="btn btn--fantasma" href="tienda.html">Ver toda la tienda →</a>
@@ -223,8 +219,7 @@
 
       <div class="tienda__pie revelar">
         <p class="tienda__nota">
-          Retiro sin cargo en la pileta o envío a todo el país. Estos cuatro son los que más salen;
-          el catálogo completo está en la tienda.
+          Catálogo completo en la tienda.
         </p>
         <a class="btn btn--hielo" href="tienda.html">Ir a la tienda</a>
       </div>
@@ -238,24 +233,20 @@
         <p class="eyebrow">Sumate al equipo</p>
         <h2 class="seccion__titulo">Tu primera clase<br>es sin cargo</h2>
         <p class="seccion__texto cierre__texto">
-          Dejanos tus datos y te escribimos con el horario que mejor te queda.
-        </p>
-        <p class="hero__nota cierre__contacto">
-          También podés escribirnos a <b>hola@aquaragnar.club</b> o pasar por la pileta
-          de lunes a viernes entre las 18 y las 21.
+          Dejanos tus datos con el grupo que mejor te queda y te escribimos.
         </p>
       </div>
 
       <form class="formulario" id="inscripcion" novalidate>
         <div class="campo" id="campo-nombre">
           <label for="nombre">Nombre y apellido</label>
-          <input type="text" id="nombre" name="nombre" placeholder="Erika Larsen" autocomplete="name">
+          <input type="text" id="nombre" name="nombre" autocomplete="name">
           <p class="error" id="error-nombre"></p>
         </div>
 
         <div class="campo" id="campo-email">
           <label for="email">Email</label>
-          <input type="email" id="email" name="email" placeholder="erika@correo.com" autocomplete="email">
+          <input type="email" id="email" name="email" autocomplete="email">
           <p class="error" id="error-email"></p>
         </div>
 
@@ -263,9 +254,9 @@
           <label for="grupo">Grupo que te interesa</label>
           <select id="grupo" name="grupo">
             <option value="">Elegí un grupo</option>
-            <option>Escuela (5 a 12 años)</option>
-            <option>Competencia (13 a 18 años)</option>
-            <option>Entrenamiento (adultos)</option>
+            <option>Escuela</option>
+            <option>Competencia</option>
+            <option>Entrenamiento</option>
             <option>Aguas abiertas</option>
             <option>Todavía no sé</option>
           </select>
@@ -333,6 +324,7 @@
 <script src="datos.js"></script>
 <script src="render.js"></script>
 <script src="interfaz.js"></script>
+<script src="pillnav.js"></script>
 <script type="module" src="torpedo.js"></script>
 <script type="module" src="galeria.js"></script>
 </body>

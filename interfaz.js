@@ -17,40 +17,6 @@
     window.addEventListener("scroll", alScrollear, { passive: true });
   })();
 
-  /* ---------- Menú fluido: la capa entra por el borde más cercano ---------- */
-  (function () {
-    var bordeCercano = function (item, e) {
-      var r = item.getBoundingClientRect();
-      return (e.clientY - r.top) < r.height / 2 ? "arriba" : "abajo";
-    };
-
-    Array.prototype.forEach.call(document.querySelectorAll(".menu__item"), function (item) {
-      var capa = item.querySelector(".marquesina");
-      var inner = item.querySelector(".marquesina__inner");
-      if (!capa || !inner) return;
-
-      var colocar = function (borde, animar) {
-        var fuera = borde === "arriba" ? "-101%" : "101%";
-        var dentro = borde === "arriba" ? "101%" : "-101%";
-        item.classList.toggle("marquesina--sin-transicion", !animar);
-        capa.style.transform = "translate3d(0," + fuera + ",0)";
-        inner.style.transform = "translate3d(0," + dentro + ",0)";
-      };
-
-      item.addEventListener("mouseenter", function (e) {
-        colocar(bordeCercano(item, e), false);
-        void capa.offsetWidth; /* fuerza el reflow antes de reactivar la transición */
-        item.classList.remove("marquesina--sin-transicion");
-        capa.style.transform = "translate3d(0,0,0)";
-        inner.style.transform = "translate3d(0,0,0)";
-      });
-
-      item.addEventListener("mouseleave", function (e) {
-        colocar(bordeCercano(item, e), true);
-      });
-    });
-  })();
-
   /* ---------- Formulario de inscripción ---------- */
   (function () {
     var form = document.getElementById("inscripcion");
@@ -142,6 +108,17 @@
       }
     }
   })();
+
+
+  /* ---------- Al cerrar un desplegable se frena lo que esté sonando ----------
+     El evento toggle no burbujea, por eso se escucha en fase de captura. */
+  document.addEventListener("toggle", function (ev) {
+    var d = ev.target;
+    if (!d || d.tagName !== "DETAILS" || d.open) return;
+    Array.prototype.forEach.call(d.querySelectorAll("video,audio"), function (m) {
+      if (!m.paused) m.pause();
+    });
+  }, true);
 
   /* ---------- Visor de las fotos del equipo ---------- */
   (function () {

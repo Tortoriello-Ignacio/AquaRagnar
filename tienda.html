@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Tienda · AquaRagnar</title>
-<meta name="description" content="Antiparras, manoplas, indumentaria y suplementos. 29 productos, retiro en la pileta o envío a todo el país.">
+<meta name="description" content="Accesorios y suplementación, mallas e indumentaria oficial de AquaRagnar. Retiro en la pileta o envío a domicilio.">
 <meta name="theme-color" content="#03101f">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -73,9 +73,6 @@ p{margin:0}
 .marca__nombre{font-family:var(--vikinga);font-weight:600;font-size:1.35rem;letter-spacing:.05em;color:#eef6ff}
 .marca__nombre span{color:#63b4f5}
 .nav__acciones{display:flex;align-items:center;gap:.9rem;flex:none}
-.nav__oficial{font-size:.85rem;padding:.6rem .9rem;white-space:nowrap}
-/* CAMBIO: en pantallas chicas el botón de la tienda oficial se esconde (queda el del pie) */
-@media (max-width:640px){.nav .nav__oficial{display:none}}
 
 .btn{
   display:inline-flex;align-items:center;justify-content:center;gap:.6rem;border:0;cursor:pointer;
@@ -246,8 +243,6 @@ p{margin:0}
     </a>
 
     <div class="nav__acciones">
-      <!-- CAMBIO: acceso directo a la tienda oficial de Tiendanube -->
-      <a class="btn btn--fantasma nav__oficial" href="https://aquaragnar.mitiendanube.com/" target="_blank" rel="noopener">Tienda oficial ↗</a>
       <button class="carrito-btn" id="abrirCarrito" type="button" aria-label="Abrir el carrito" aria-controls="carrito" aria-expanded="false">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M3 4h2l2.4 11.4a2 2 0 002 1.6h7.7a2 2 0 002-1.6L21 8H6"/>
@@ -267,12 +262,11 @@ p{margin:0}
       <h1 class="cabecera__titulo">Equipate<br>para el <em>agua</em>.</h1>
       <p class="cabecera__bajada">
         Lo que usamos todos los días en la pileta: indumentaria, accesorios de entrenamiento
-        y suplementos. Mismo catálogo y mismos precios que la tienda oficial del club.
+        y suplementos.
       </p>
       <p class="envios">
         <span>Retiro en la pileta sin cargo</span>
-        <span>Envíos a todo el país</span>
-        <span>10% off por transferencia</span>
+        <span>Envíos a domicilio</span>
       </p>
     </div>
   </section>
@@ -330,11 +324,10 @@ p{margin:0}
         <li><a href="index.html">Volver al club</a></li>
         <li><a href="index.html#programas">Programas</a></li>
         <li><a href="index.html#sumate">Clase de prueba</a></li>
-        <li><a href="https://aquaragnar.mitiendanube.com/" target="_blank" rel="noopener">Tienda oficial ↗</a></li>
         <li><a href="mailto:tienda@aquaragnar.club">tienda@aquaragnar.club</a></li>
       </ul>
     </div>
-    <p class="pie__base">© 2026 AquaRagnar · Precios tomados de la tienda oficial. El stock y el pago se confirman ahí.</p>
+    <p class="pie__base">© 2026 AquaRagnar · Club de natación</p>
   </div>
 </footer>
 
@@ -343,41 +336,40 @@ p{margin:0}
   "use strict";
 
   /* ---------- Catálogo ---------- */
-  /* CAMBIO: catálogo real, tomado de aquaragnar.mitiendanube.com.
+  /* Catálogo del club.
      Las fotos se sirven desde el CDN de la tienda, así se actualizan solas. */
   var BASE = "https://dcdn-us.mitiendanube.com/stores/007/851/753/products/";
-  var TIENDA = "https://aquaragnar.mitiendanube.com/productos/";
 
   var PRODUCTOS = [
-    { id:"bolsa-red-dak", nombre:"Bolsa de Red Dak", cat:"Accesorios", precio:20000, img:BASE+"img_3082-a3ae7d32009c6bce5617850836346335-640-0.webp", url:TIENDA+"bolsa-de-red-dak-8yx1f/" },
-    { id:"cobra-ultra-mirror", nombre:"Cobra Ultra Mirror", cat:"Accesorios", precio:120000, img:BASE+"img_3079-005969a3c6ccfbe41417850829852065-640-0.webp", url:TIENDA+"cobra-ultra-mirror-apida/" },
-    { id:"cobra-ultra-swipe", nombre:"Cobra Ultra Swipe", cat:"Accesorios", precio:130000, img:BASE+"img_3076-728d19b8c0d4d6c07317850821048282-640-0.webp", url:TIENDA+"cobra-ultra-swipe-dxddc/" },
-    { id:"manoplas-mafred", nombre:"Manoplas Mafred Marea", cat:"Entrenamiento", precio:10000, img:BASE+"img_2918-46f9c72c8f53b1ce8917842509962746-640-0.webp", url:TIENDA+"manoplas-mafred-marea-1qsbv/" },
-    { id:"veloster-mirror", nombre:"Veloster Mirror Antiparras Dak", cat:"Accesorios", precio:35000, img:BASE+"img_2917-d794a942672142ee1f17842504185834-640-0.webp", url:TIENDA+"velo-ayer-mirror-amtiparras-dak-10fel/" },
-    { id:"creatina-500-100", nombre:"Creatina StarNutrition 500g 100 servicios", cat:"Suplementos", precio:51000, img:BASE+"img_2850-9867f1c247127c8dcc17839594788547-640-0.webp", url:TIENDA+"creatina-starnutrition-500g-100-servicios-1fn8a/" },
-    { id:"thermo-fuel-max", nombre:"Thermo Fuel Max StarNutrition 30 serv", cat:"Suplementos", precio:25000, img:BASE+"img_2848-9d6b4dba18b11d81ae17839589813848-640-0.webp", url:TIENDA+"thermo-fuel-max-starnutrition-30serv-1wjht/" },
-    { id:"mtor-20", nombre:"Mtor StarNutrition 20 servicios", cat:"Suplementos", precio:29000, img:BASE+"img_2843-4bc74c6b2b60a83f4b17839584616630-640-0.webp", url:TIENDA+"mtor-starnutrition-20-servicios-b0qab/" },
-    { id:"remera-guardavidas", nombre:"Remera Guardavidas Dak", cat:"Indumentaria", precio:26000, img:BASE+"img_2607-f29c23c2c39ce8806617830200362926-640-0.webp", url:TIENDA+"remera-guardavidas-dak-vpiv7/" },
-    { id:"buzo-guardavidas", nombre:"Buzo Guardavidas Dak", cat:"Indumentaria", precio:52000, img:BASE+"img_2600-f92bb4f7afa6ef692217830195178834-640-0.webp", url:TIENDA+"buzo-guardavidas-dak-1hfz7/" },
-    { id:"viper-mirror", nombre:"Antiparras Dak Viper Mirror", cat:"Accesorios", precio:60000, img:BASE+"img_2568-181387379dee5da9b517830192485890-640-0.webp", url:TIENDA+"antiparras-dak-viper-mirror-1tyyw/" },
-    { id:"manoplas-hawai", nombre:"Manoplas Dak Hawái", cat:"Entrenamiento", precio:18000, img:BASE+"img_2563-da01e5534b7905858b17830034100078-640-0.webp", url:TIENDA+"manoplas-dak-hawai-mv19n/" },
-    { id:"creatina-500", nombre:"Creatina Star Nutrition 500g", cat:"Suplementos", precio:52000, img:BASE+"img_2517-c1794423506348590517828313112866-640-0.webp", url:TIENDA+"creatina-star-nutrition-500g-2tsmm/" },
-    { id:"cinturon-velocidad", nombre:"Cinturón de Velocidad Asistida Dak", cat:"Entrenamiento", precio:45000, img:BASE+"img_2485-612758b765f8a48c5117825956990940-640-0.webp", url:TIENDA+"cinturon-de-velocidad-asistida-dak-lf58s/" },
-    { id:"torpedo-guardavidas", nombre:"Torpedo Guardavidas Dak", cat:"Entrenamiento", precio:48900, img:BASE+"img_2480-982244ec56f307965e17825941969825-640-0.webp", url:TIENDA+"torpedo-guardavidas-dak-1dkwo/" },
-    { id:"paracaidas-arrastre", nombre:"Paracaídas de Arrastre Dak", cat:"Entrenamiento", precio:19900, img:BASE+"img_2477-c38c06e77381f42de417825750889417-640-0.webp", url:TIENDA+"paracaidas-de-arraste-dak-1r7ns/" },
-    { id:"irongel", nombre:"Irongel Gentech sabores varios", cat:"Suplementos", precio:8000, img:BASE+"img_2450-9f71f829dae66e7cbc17822649372267-640-0.webp", url:TIENDA+"irongel-gentech-sabores-varios-4e29d/" },
-    { id:"arena-the-one", nombre:"Antiparras Arena The One Mirror", cat:"Accesorios", precio:55000, img:BASE+"img_2446-f2353877aceac897a217822414932578-640-0.webp", url:TIENDA+"antiparras-arena-the-one-mirror-vcilh/" },
-    { id:"omega3", nombre:"Omega3 StarNutrition 60 cápsulas", cat:"Suplementos", precio:38900, img:BASE+"img_0811-d57d829a2c7137176517822335498701-640-0.webp", url:TIENDA+"omega3-starnutrition-60-capsulas-1ohlw/" },
-    { id:"hydroplus", nombre:"Hydroplus Star Nutrition", cat:"Suplementos", precio:25900, img:BASE+"img_2433-474e92dd6fade764ba17822312169210-640-0.webp", url:TIENDA+"hydroplus-star-nutrition-12pmw/" },
-    { id:"barra-holsom", nombre:"Barra Proteica Holsom 22g de proteína", cat:"Suplementos", precio:45000, img:BASE+"img_0200-504669ac215d59356e17822306659800-640-0.webp", url:TIENDA+"barra-proteica-holsom-22g-de-proteina-459vl/" },
-    { id:"irombar", nombre:"IromBar Gentech 15g de proteína 20 unidades", cat:"Suplementos", precio:42900, img:BASE+"img_0197-4b5f5833d874b8177d17822300446944-640-0.webp", url:TIENDA+"irombar-gentech-15g-de-proteina-20-unidades-p6avq/" },
-    { id:"pump-v8", nombre:"Pre Entreno StarNutrition PUMP V8 30 servicios", cat:"Suplementos", precio:36000, img:BASE+"img_0225-f08ac2be7bfde1139b17821479193955-640-0.webp", url:TIENDA+"pre-entreno-starnutrition-pump-v8-30-servicios-1scpc/" },
-    { id:"proteina-3kg", nombre:"Proteína Star Nutrition 3 kg", cat:"Suplementos", precio:165000, antes:185000, img:BASE+"img_0213-866c0a4b0029e6acc517821465406362-640-0.webp", url:TIENDA+"proteina-star-nutrition-3kg-h6pk4/", sello:"Oferta" },
-    { id:"colageno", nombre:"Colágeno Hidrolizado Star Nutrition 210g", cat:"Suplementos", precio:28000, img:BASE+"img_2431-e3d8c63114f6b937e017821463975400-640-0.webp", url:TIENDA+"colageno-hidrolizado-star-nutrition-210g-lgk2m/" },
-    { id:"citrato-magnesio", nombre:"Citrato de Magnesio Star Nutrition 500g", cat:"Suplementos", precio:29800, img:BASE+"img_0220-545d831969c748f48817821457855244-640-0.webp", url:TIENDA+"citrato-de-magnesio-star-nutrition-500g-1ueeb/" },
-    { id:"tnt-dynamite", nombre:"Pre Entreno TNT Dynamite Star Nutrition 240g", cat:"Suplementos", precio:25000, img:BASE+"img_0224-4d3f2183b2857db6ce17819913469968-640-0.webp", url:TIENDA+"pre-entreno-tnt-dynamite-star-nutrition-varios-sabores-x-240g-1whxy/" },
-    { id:"creatina-300", nombre:"Creatina Star Nutrition 300g", cat:"Suplementos", precio:31000, img:BASE+"img_0217-5ee3b21c851f22b92017819899943818-640-0.webp", url:TIENDA+"creatina-star-nutrition-300g-33yvh/" },
-    { id:"proteina-1kg", nombre:"Proteína Star Nutrition", cat:"Suplementos", precio:45900, antes:53900, img:BASE+"img_0216-dcfb2083f0138e874717815717508590-640-0.webp", url:TIENDA+"proteina-star-nutrition-ehxh9/", sello:"Oferta" }
+    { id:"bolsa-red-dak", nombre:"Bolsa de Red Dak", cat:"Accesorios", precio:20000, img:BASE+"img_3082-a3ae7d32009c6bce5617850836346335-640-0.webp" },
+    { id:"cobra-ultra-mirror", nombre:"Cobra Ultra Mirror", cat:"Accesorios", precio:120000, img:BASE+"img_3079-005969a3c6ccfbe41417850829852065-640-0.webp" },
+    { id:"cobra-ultra-swipe", nombre:"Cobra Ultra Swipe", cat:"Accesorios", precio:130000, img:BASE+"img_3076-728d19b8c0d4d6c07317850821048282-640-0.webp" },
+    { id:"manoplas-mafred", nombre:"Manoplas Mafred Marea", cat:"Entrenamiento", precio:10000, img:BASE+"img_2918-46f9c72c8f53b1ce8917842509962746-640-0.webp" },
+    { id:"veloster-mirror", nombre:"Veloster Mirror Antiparras Dak", cat:"Accesorios", precio:35000, img:BASE+"img_2917-d794a942672142ee1f17842504185834-640-0.webp" },
+    { id:"creatina-500-100", nombre:"Creatina StarNutrition 500g 100 servicios", cat:"Suplementos", precio:51000, img:BASE+"img_2850-9867f1c247127c8dcc17839594788547-640-0.webp" },
+    { id:"thermo-fuel-max", nombre:"Thermo Fuel Max StarNutrition 30 serv", cat:"Suplementos", precio:25000, img:BASE+"img_2848-9d6b4dba18b11d81ae17839589813848-640-0.webp" },
+    { id:"mtor-20", nombre:"Mtor StarNutrition 20 servicios", cat:"Suplementos", precio:29000, img:BASE+"img_2843-4bc74c6b2b60a83f4b17839584616630-640-0.webp" },
+    { id:"remera-guardavidas", nombre:"Remera Guardavidas Dak", cat:"Indumentaria", precio:26000, img:BASE+"img_2607-f29c23c2c39ce8806617830200362926-640-0.webp" },
+    { id:"buzo-guardavidas", nombre:"Buzo Guardavidas Dak", cat:"Indumentaria", precio:52000, img:BASE+"img_2600-f92bb4f7afa6ef692217830195178834-640-0.webp" },
+    { id:"viper-mirror", nombre:"Antiparras Dak Viper Mirror", cat:"Accesorios", precio:60000, img:BASE+"img_2568-181387379dee5da9b517830192485890-640-0.webp" },
+    { id:"manoplas-hawai", nombre:"Manoplas Dak Hawái", cat:"Entrenamiento", precio:18000, img:BASE+"img_2563-da01e5534b7905858b17830034100078-640-0.webp" },
+    { id:"creatina-500", nombre:"Creatina Star Nutrition 500g", cat:"Suplementos", precio:52000, img:BASE+"img_2517-c1794423506348590517828313112866-640-0.webp" },
+    { id:"cinturon-velocidad", nombre:"Cinturón de Velocidad Asistida Dak", cat:"Entrenamiento", precio:45000, img:BASE+"img_2485-612758b765f8a48c5117825956990940-640-0.webp" },
+    { id:"torpedo-guardavidas", nombre:"Torpedo Guardavidas Dak", cat:"Entrenamiento", precio:48900, img:BASE+"img_2480-982244ec56f307965e17825941969825-640-0.webp" },
+    { id:"paracaidas-arrastre", nombre:"Paracaídas de Arrastre Dak", cat:"Entrenamiento", precio:19900, img:BASE+"img_2477-c38c06e77381f42de417825750889417-640-0.webp" },
+    { id:"irongel", nombre:"Irongel Gentech sabores varios", cat:"Suplementos", precio:8000, img:BASE+"img_2450-9f71f829dae66e7cbc17822649372267-640-0.webp" },
+    { id:"arena-the-one", nombre:"Antiparras Arena The One Mirror", cat:"Accesorios", precio:55000, img:BASE+"img_2446-f2353877aceac897a217822414932578-640-0.webp" },
+    { id:"omega3", nombre:"Omega3 StarNutrition 60 cápsulas", cat:"Suplementos", precio:38900, img:BASE+"img_0811-d57d829a2c7137176517822335498701-640-0.webp" },
+    { id:"hydroplus", nombre:"Hydroplus Star Nutrition", cat:"Suplementos", precio:25900, img:BASE+"img_2433-474e92dd6fade764ba17822312169210-640-0.webp" },
+    { id:"barra-holsom", nombre:"Barra Proteica Holsom 22g de proteína", cat:"Suplementos", precio:45000, img:BASE+"img_0200-504669ac215d59356e17822306659800-640-0.webp" },
+    { id:"irombar", nombre:"IromBar Gentech 15g de proteína 20 unidades", cat:"Suplementos", precio:42900, img:BASE+"img_0197-4b5f5833d874b8177d17822300446944-640-0.webp" },
+    { id:"pump-v8", nombre:"Pre Entreno StarNutrition PUMP V8 30 servicios", cat:"Suplementos", precio:36000, img:BASE+"img_0225-f08ac2be7bfde1139b17821479193955-640-0.webp" },
+    { id:"proteina-3kg", nombre:"Proteína Star Nutrition 3 kg", cat:"Suplementos", precio:165000, antes:185000, img:BASE+"img_0213-866c0a4b0029e6acc517821465406362-640-0.webp", sello:"Oferta" },
+    { id:"colageno", nombre:"Colágeno Hidrolizado Star Nutrition 210g", cat:"Suplementos", precio:28000, img:BASE+"img_2431-e3d8c63114f6b937e017821463975400-640-0.webp" },
+    { id:"citrato-magnesio", nombre:"Citrato de Magnesio Star Nutrition 500g", cat:"Suplementos", precio:29800, img:BASE+"img_0220-545d831969c748f48817821457855244-640-0.webp" },
+    { id:"tnt-dynamite", nombre:"Pre Entreno TNT Dynamite Star Nutrition 240g", cat:"Suplementos", precio:25000, img:BASE+"img_0224-4d3f2183b2857db6ce17819913469968-640-0.webp" },
+    { id:"creatina-300", nombre:"Creatina Star Nutrition 300g", cat:"Suplementos", precio:31000, img:BASE+"img_0217-5ee3b21c851f22b92017819899943818-640-0.webp" },
+    { id:"proteina-1kg", nombre:"Proteína Star Nutrition", cat:"Suplementos", precio:45900, antes:53900, img:BASE+"img_0216-dcfb2083f0138e874717815717508590-640-0.webp", sello:"Oferta" }
   ];
 
   var plata = new Intl.NumberFormat("es-AR", { style:"currency", currency:"ARS", maximumFractionDigits:0 });
@@ -523,7 +515,7 @@ p{margin:0}
     }
     /* respaldo por si los scripts del checkout no cargaron */
     nota.innerHTML = 'No pudimos abrir el checkout. ' +
-      '<a href="https://aquaragnar.mitiendanube.com/" target="_blank" rel="noopener"><b>Comprar en la tienda oficial ↗</b></a>';
+      'Escribinos por WhatsApp al <b>+54 9 11 6262-1831</b> y lo cerramos por ahí.';
   });
 
   /* ---------- Puente con el checkout ----------

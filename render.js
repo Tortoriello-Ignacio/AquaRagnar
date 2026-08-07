@@ -20,29 +20,6 @@
     return caja;
   }
 
-  /* ---------- Menú fluido ---------- */
-  (function () {
-    var partes = function (texto) {
-      var una = '<span class="marquesina__parte"><span>' + esc(texto) +
-                '</span><span class="marquesina__img"></span></span>';
-      return new Array(D.REPETICIONES_MARQUESINA + 1).join(una);
-    };
-
-    pintar("menuFluido", D.MENU.map(function (item) {
-      return '' +
-      '<li class="menu__item menu--' + item.clave + '">' +
-        '<a class="menu__enlace" href="' + item.destino + '">' + esc(item.texto) + '</a>' +
-        '<div class="marquesina" aria-hidden="true">' +
-          '<div class="marquesina__ventana">' +
-            '<div class="marquesina__inner">' +
-              '<div class="marquesina__pista">' + partes(item.texto) + '</div>' +
-            '</div>' +
-          '</div>' +
-        '</div>' +
-      '</li>';
-    }).join(""));
-  })();
-
   /* ---------- Programas: fuente de datos de la galería WebGL ---------- */
   (function () {
     pintar("origenProgramas", D.PROGRAMAS.map(function (p) {
@@ -63,6 +40,40 @@
       poner("fichaNombre", primero.texto);
       poner("fichaTexto", primero.descripcion);
     }
+
+    /* ---------- Alto reservado de la ficha ----------
+       galeria.js cambia el texto de la ficha según la foto que quede
+       centrada. Como cada descripción mide distinto, la ficha cambiaba
+       de alto y toda la página de abajo saltaba. Se mide la más larga
+       una sola vez y se reserva ese alto. */
+    var reservar = function (id, campo) {
+      var caja = document.getElementById(id);
+      if (!caja) return;
+      var antes = caja.textContent;
+      caja.style.minHeight = "0px";
+      var alto = 0;
+      D.PROGRAMAS.forEach(function (p) {
+        caja.textContent = p[campo];
+        alto = Math.max(alto, caja.offsetHeight);
+      });
+      caja.textContent = antes;
+      caja.style.minHeight = alto + "px";
+    };
+
+    var medirFicha = function () {
+      reservar("fichaNombre", "texto");
+      reservar("fichaTexto", "descripcion");
+    };
+
+    medirFicha();
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(medirFicha).catch(function () {});
+    }
+    var pendiente;
+    window.addEventListener("resize", function () {
+      window.clearTimeout(pendiente);
+      pendiente = window.setTimeout(medirFicha, 150);
+    }, { passive: true });
   })();
 
   /* ---------- Mosaico del equipo ---------- */

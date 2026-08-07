@@ -1,0 +1,151 @@
+/* ============================================================
+   AquaRagnar · PillNav — estilos
+   Port del CSS de React Bits, adaptado a la paleta del sitio.
+   La animación de hover la hace CSS; pillnav.js sólo calcula el
+   tamaño del círculo y cuánto viaja cada texto.
+   ============================================================ */
+.pillnav{
+  --alto:44px;
+  --pad-x:20px;
+  --hueco:4px;
+  /* colores (equivalen a baseColor / pillColor / pillTextColor /
+     hoveredPillTextColor del componente original) */
+  --base:#0f78b4;
+  --pastilla:rgba(234,246,255,.94);
+  --pastilla-texto:#08243c;
+  --hover-texto:#ffffff;
+  --curva:cubic-bezier(.165,.84,.44,1);
+
+  display:flex;align-items:center;gap:.6rem;
+  /* centradas en la barra: la marca queda a la izquierda y las
+     pastillas al medio, sin que el ancho de la marca las corra */
+  position:absolute;left:50%;transform:translateX(-50%);
+}
+
+/* entrada al cargar */
+.pillnav__items{
+  position:relative;display:flex;align-items:center;
+  height:var(--alto);border-radius:9999px;
+  background:rgba(6,20,34,.55);
+  border:1px solid rgba(255,255,255,.14);
+  backdrop-filter:blur(10px);
+  overflow:hidden;
+  max-width:0;opacity:0;
+  transition:max-width 620ms var(--curva),opacity 420ms ease;
+}
+.pillnav.is-listo .pillnav__items{max-width:720px;opacity:1}
+
+.pillnav__lista{
+  list-style:none;display:flex;align-items:stretch;
+  gap:var(--hueco);margin:0;padding:4px;height:100%;
+}
+.pillnav__lista > li{display:flex;height:100%}
+
+/* ---------- la pastilla ---------- */
+.pill{
+  position:relative;overflow:hidden;isolation:isolate;
+  display:inline-flex;align-items:center;justify-content:center;
+  height:100%;padding:0 var(--pad-x);
+  border-radius:9999px;
+  background:var(--pastilla);
+  color:var(--pastilla-texto);
+  font-family:var(--display,sans-serif);
+  font-weight:800;text-transform:uppercase;
+  font-size:.92rem;letter-spacing:.04em;line-height:1;
+  white-space:nowrap;cursor:pointer;
+}
+.pill__circulo{
+  position:absolute;left:50%;bottom:0;z-index:1;
+  border-radius:50%;background:var(--base);
+  pointer-events:none;display:block;will-change:transform;
+  transform:translateX(-50%) scale(0);
+  transition:transform 200ms var(--curva);
+}
+.pill__pila{position:relative;display:inline-block;line-height:1;z-index:2}
+.pill__texto{
+  position:relative;z-index:2;display:inline-block;line-height:1;
+  will-change:transform;transform:translateY(0);
+  transition:transform 200ms var(--curva);
+}
+.pill__texto--hover{
+  position:absolute;left:0;top:0;z-index:3;
+  color:var(--hover-texto);opacity:0;
+  transform:translateY(var(--entrada,120px));
+  transition:transform 200ms var(--curva),opacity 200ms ease;
+}
+/* al entrar el puntero: el círculo crece desde abajo y los textos rotan */
+.pill:hover .pill__circulo,
+.pill:focus-visible .pill__circulo{transform:translateX(-50%) scale(1.2);transition-duration:300ms}
+.pill:hover .pill__texto,
+.pill:focus-visible .pill__texto{transform:translateY(calc(var(--salto,32px) * -1));transition-duration:300ms}
+.pill:hover .pill__texto--hover,
+.pill:focus-visible .pill__texto--hover{transform:translateY(0);opacity:1;transition-duration:300ms}
+
+/* sección en pantalla */
+.pill.is-activa::after{
+  content:"";position:absolute;left:50%;bottom:5px;
+  width:14px;height:3px;border-radius:99px;z-index:4;
+  transform:translateX(-50%);background:var(--base);
+}
+.pill.is-activa:hover::after{background:var(--hover-texto)}
+
+/* ---------- hamburguesa ---------- */
+.pillnav__hamburguesa{
+  display:none;width:var(--alto);height:var(--alto);flex:none;
+  border-radius:50%;cursor:pointer;padding:0;
+  background:rgba(6,20,34,.55);
+  border:1px solid rgba(255,255,255,.16);
+  backdrop-filter:blur(10px);
+  flex-direction:column;align-items:center;justify-content:center;gap:5px;
+}
+.pillnav__raya{
+  width:17px;height:2px;border-radius:2px;
+  background:var(--pastilla);
+  transition:transform 260ms var(--curva);
+}
+.pillnav__hamburguesa.is-abierto .pillnav__raya:first-child{transform:translateY(3.5px) rotate(45deg)}
+.pillnav__hamburguesa.is-abierto .pillnav__raya:last-child{transform:translateY(-3.5px) rotate(-45deg)}
+
+/* ---------- menú desplegable en móvil ---------- */
+.pillnav__movil{
+  /* vive fuera de .pillnav, así que repite las variables que usa */
+  --alto:44px;
+  --base:#0f78b4;
+  --pastilla:rgba(234,246,255,.94);
+  --pastilla-texto:#08243c;
+  --hover-texto:#ffffff;
+  --curva:cubic-bezier(.165,.84,.44,1);
+
+  position:fixed;top:calc(var(--alto) + 1.5rem);left:1rem;right:1rem;z-index:69;
+  border-radius:24px;padding:5px;
+  background:rgba(8,24,40,.92);
+  border:1px solid rgba(255,255,255,.14);
+  backdrop-filter:blur(14px);
+  box-shadow:0 26px 60px -28px rgba(0,0,0,.85);
+  opacity:0;transform:translateY(-10px);transform-origin:top center;
+  transition:opacity 220ms ease,transform 260ms var(--curva);
+}
+.pillnav__movil[hidden]{display:none}
+.pillnav__movil.is-abierto{opacity:1;transform:none}
+.pillnav__movil-lista{list-style:none;margin:0;padding:0;display:grid;gap:4px}
+.pillnav__movil-enlace{
+  display:block;padding:.9rem 1.1rem;border-radius:18px;
+  background:var(--pastilla,#eaf6ff);color:var(--pastilla-texto,#08243c);
+  font-family:var(--display,sans-serif);font-weight:800;
+  text-transform:uppercase;letter-spacing:.04em;font-size:1.05rem;
+  transition:background 200ms ease,color 200ms ease;
+}
+.pillnav__movil-enlace:hover,
+.pillnav__movil-enlace.is-activa{background:var(--base,#0f78b4);color:var(--hover-texto,#fff)}
+
+/* ---------- responsive ---------- */
+@media (max-width:900px){
+  .pillnav__items{display:none}
+  .pillnav__hamburguesa{display:flex}
+  /* en móvil la hamburguesa vuelve a la derecha */
+  .pillnav{position:static;transform:none;margin-left:auto}
+}
+@media (prefers-reduced-motion:reduce){
+  .pillnav__items,.pill__circulo,.pill__texto,.pill__texto--hover,
+  .pillnav__raya,.pillnav__movil{transition:none}
+}
